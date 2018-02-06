@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  email: MyString
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  firstname: MyString
+  lastname: MyString
+  street: MyString
+  street2: MyString
+  city: MyString
+  zip: MyString
+  country: MyString
+  phone: MyString
+
+two:
+  email: MyString
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  firstname: MyString
+  lastname: MyString
+  street: MyString
+  street2: MyString
+  city: MyString
+  zip: MyString
+  country: MyString
+  phone: MyString
