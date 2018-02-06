@@ -1,0 +1,19 @@
+%p#notice= notice
+%p
+  %strong Issuer:
+  = @certificate.issuer
+%p
+  %strong Subject:
+  = @certificate.subject
+%p
+  %strong Profile:
+  = @certificate.profile
+%p
+  %strong Pem:
+  = @certificate.pem
+%p
+  %strong Revoked at:
+  = @certificate.revoked_at
+= link_to 'Edit', edit_certificate_path(@certificate)
+|
+= link_to 'Back', certificates_path

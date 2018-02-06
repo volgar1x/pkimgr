@@ -1,0 +1,19 @@
+%p#notice= notice
+%p
+  %strong Name:
+  = @authority.name
+%p
+  %strong Email:
+  = @authority.email
+%p
+  %strong Website:
+  = @authority.website
+%p
+  %strong Sign key pem:
+  = @authority.sign_key_pem
+%p
+  %strong Encrypt key pem:
+  = @authority.encrypt_key_pem
+= link_to 'Edit', edit_authority_path(@authority)
+|
+= link_to 'Back', authorities_path

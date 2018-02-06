@@ -1,0 +1,14 @@
+= form_with(model: cert_profile, local: true) do |form|
+  - if cert_profile.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(cert_profile.errors.count, "error")
+        prohibited this cert_profile from being saved:
+      %ul
+        - cert_profile.errors.full_messages.each do |message|
+          %li= message
+  .field
+    = form.label :name
+    = form.text_field :name, id: :cert_profile_name
+  .actions
+    = form.submit
