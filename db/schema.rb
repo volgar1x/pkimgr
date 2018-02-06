@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206160231) do
+ActiveRecord::Schema.define(version: 20180206163538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,17 @@ ActiveRecord::Schema.define(version: 20180206160231) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "cert_signing_requests", force: :cascade do |t|
+    t.string "subject_type", null: false
+    t.bigint "subject_id", null: false
+    t.bigint "profile_id"
+    t.text "pem"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profile_id"], name: "index_cert_signing_requests_on_profile_id"
+    t.index ["subject_type", "subject_id"], name: "index_cert_signing_requests_on_subject_type_and_subject_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -68,4 +79,5 @@ ActiveRecord::Schema.define(version: 20180206160231) do
   end
 
   add_foreign_key "cert_profile_constraints", "cert_profiles", column: "profile_id"
+  add_foreign_key "cert_signing_requests", "cert_profiles", column: "profile_id"
 end

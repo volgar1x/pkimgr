@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :cert_signing_requests
   resources :cert_profile_constraints
   resources :cert_profiles
   resources :authorities

@@ -1,0 +1,32 @@
+<%= form_with(model: cert_signing_request, local: true) do |form| %>
+  <% if cert_signing_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(cert_signing_request.errors.count, "error") %> prohibited this cert_signing_request from being saved:</h2>
+
+      <ul>
+      <% cert_signing_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :subject_id %>
+    <%= form.text_field :subject_id, id: :cert_signing_request_subject_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :profile_id %>
+    <%= form.text_field :profile_id, id: :cert_signing_request_profile_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :pem %>
+    <%= form.text_area :pem, id: :cert_signing_request_pem %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

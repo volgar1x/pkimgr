@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Subject:</strong>
+  <%= @cert_signing_request.subject %>
+</p>
+
+<p>
+  <strong>Profile:</strong>
+  <%= @cert_signing_request.profile %>
+</p>
+
+<p>
+  <strong>Pem:</strong>
+  <%= @cert_signing_request.pem %>
+</p>
+
+<%= link_to 'Edit', edit_cert_signing_request_path(@cert_signing_request) %> |
+<%= link_to 'Back', cert_signing_requests_path %>
