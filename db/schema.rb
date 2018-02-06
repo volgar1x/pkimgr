@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206163538) do
+ActiveRecord::Schema.define(version: 20180206164225) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,20 @@ ActiveRecord::Schema.define(version: 20180206163538) do
     t.index ["subject_type", "subject_id"], name: "index_cert_signing_requests_on_subject_type_and_subject_id"
   end
 
+  create_table "certificates", force: :cascade do |t|
+    t.bigint "issuer_id", null: false
+    t.string "subject_type", null: false
+    t.bigint "subject_id", null: false
+    t.bigint "profile_id", null: false
+    t.text "pem", null: false
+    t.datetime "revoked_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issuer_id"], name: "index_certificates_on_issuer_id"
+    t.index ["profile_id"], name: "index_certificates_on_profile_id"
+    t.index ["subject_type", "subject_id"], name: "index_certificates_on_subject_type_and_subject_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -80,4 +94,6 @@ ActiveRecord::Schema.define(version: 20180206163538) do
 
   add_foreign_key "cert_profile_constraints", "cert_profiles", column: "profile_id"
   add_foreign_key "cert_signing_requests", "cert_profiles", column: "profile_id"
+  add_foreign_key "certificates", "authorities", column: "issuer_id"
+  add_foreign_key "certificates", "cert_profiles", column: "profile_id"
 end

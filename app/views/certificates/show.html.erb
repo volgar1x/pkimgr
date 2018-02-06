@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Issuer:</strong>
+  <%= @certificate.issuer %>
+</p>
+
+<p>
+  <strong>Subject:</strong>
+  <%= @certificate.subject %>
+</p>
+
+<p>
+  <strong>Profile:</strong>
+  <%= @certificate.profile %>
+</p>
+
+<p>
+  <strong>Pem:</strong>
+  <%= @certificate.pem %>
+</p>
+
+<p>
+  <strong>Revoked at:</strong>
+  <%= @certificate.revoked_at %>
+</p>
+
+<%= link_to 'Edit', edit_certificate_path(@certificate) %> |
+<%= link_to 'Back', certificates_path %>

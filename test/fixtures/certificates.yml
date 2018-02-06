@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  issuer: one
+  subject: one
+  profile: one
+  pem: MyText
+  revoked_at: 2018-02-06 17:42:25
+
+two:
+  issuer: two
+  subject: two
+  profile: two
+  pem: MyText
+  revoked_at: 2018-02-06 17:42:25
