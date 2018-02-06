@@ -1,0 +1,92 @@
+@startuml
+
+class users {
+  @pk int id
+  @uniq String email
+  String password_digest
+  String? firstname
+  String? lastname
+  String? street
+  String? street2
+  String? city
+  String? zip
+  String? country
+  String? phone
+  DateTime created_at
+  DateTime updated_at
+}
+
+class users_authorities {
+  @fk int user_id
+  @fk int authority_id
+}
+
+class cert_profiles {
+  @pk int id
+  String name
+  DateTime created_at
+  DateTime updated_at
+}
+
+together {
+  enum constraint_type {
+    subject_key_type
+    subject_key_size
+  }
+
+  class cert_profile_constraints {
+    @pk int id
+    @fk int profile_id
+    constraint_type type
+    jsonb value
+    DateTime created_at
+    DateTime updated_at
+  }
+}
+
+together {
+  class authorities {
+    @pk int id
+    @uniq String name
+    @uniq String email
+    @uniq String website_url
+    String password_digest
+    String sign_key_pem
+    String encrypt_key_pem
+    DateTime created_at
+    DateTime updated_at
+  }
+
+  class certificates {
+    @pk int id
+    @fk int issuer_id
+    @fk int subject_id
+    @fk int profile_id
+    String pem
+    DateTime? revoked_at
+    DateTime created_at
+    DateTime updated_at
+  }
+
+  class cert_signing_requests {
+    @pk int id
+    @fk int subject_id
+    String subject_type
+    @fk int? profile_id
+    String pem
+    DateTime created_at
+    DateTime updated_at
+  }
+}
+
+users "1" *-- "n" users_authorities
+authorities "1" *-- "n" users_authorities
+cert_profiles "1" *-- "n" cert_profile_constraints
+certificates "n" --* "1" cert_profiles : defines
+certificates "n" --* "1" authorities : issuer
+certificates "n" --* "1" authorities : subject
+cert_signing_requests "n" --* "1" authorities : subject
+cert_signing_requests "n" --* "1" users : subject
+cert_signing_requests "n" --* "1" cert_profiles : defines
+
+@enduml
