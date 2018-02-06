@@ -1,0 +1,52 @@
+<%= form_with(model: authority, local: true) do |form| %>
+  <% if authority.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(authority.errors.count, "error") %> prohibited this authority from being saved:</h2>
+
+      <ul>
+      <% authority.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :authority_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email, id: :authority_email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :website %>
+    <%= form.text_field :website, id: :authority_website %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password %>
+    <%= form.password_field :password, id: :authority_password %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password_confirmation %>
+    <%= form.password_field :password_confirmation, id: :authority_password_confirmation %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sign_key_pem %>
+    <%= form.text_area :sign_key_pem, id: :authority_sign_key_pem %>
+  </div>
+
+  <div class="field">
+    <%= form.label :encrypt_key_pem %>
+    <%= form.text_area :encrypt_key_pem, id: :authority_encrypt_key_pem %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
