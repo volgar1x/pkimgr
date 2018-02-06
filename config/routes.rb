@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'root#home'
+
   resources :certificates
   resources :cert_signing_requests
   resources :cert_profile_constraints
