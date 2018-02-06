@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Cert Profile Constraints</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Profile</th>
+      <th>Type</th>
+      <th>Value</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cert_profile_constraints.each do |cert_profile_constraint| %>
+      <tr>
+        <td><%= cert_profile_constraint.profile %></td>
+        <td><%= cert_profile_constraint.type %></td>
+        <td><%= cert_profile_constraint.value %></td>
+        <td><%= link_to 'Show', cert_profile_constraint %></td>
+        <td><%= link_to 'Edit', edit_cert_profile_constraint_path(cert_profile_constraint) %></td>
+        <td><%= link_to 'Destroy', cert_profile_constraint, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Cert Profile Constraint', new_cert_profile_constraint_path %>

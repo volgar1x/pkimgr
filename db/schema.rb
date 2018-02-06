@@ -10,7 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206130948) do
+ActiveRecord::Schema.define(version: 20180206160231) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "authorities", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "website"
+    t.string "password_digest"
+    t.text "sign_key_pem"
+    t.text "encrypt_key_pem"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_authorities_on_email", unique: true
+    t.index ["name"], name: "index_authorities_on_name", unique: true
+    t.index ["website"], name: "index_authorities_on_website", unique: true
+  end
+
+  create_table "authorities_users", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "authority_id", null: false
+    t.index ["authority_id"], name: "index_authorities_users_on_authority_id"
+    t.index ["user_id"], name: "index_authorities_users_on_user_id"
+  end
+
+  create_table "cert_profile_constraints", force: :cascade do |t|
+    t.bigint "profile_id"
+    t.string "type"
+    t.jsonb "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profile_id"], name: "index_cert_profile_constraints_on_profile_id"
+  end
+
+  create_table "cert_profiles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
@@ -28,4 +67,5 @@ ActiveRecord::Schema.define(version: 20180206130948) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "cert_profile_constraints", "cert_profiles", column: "profile_id"
 end

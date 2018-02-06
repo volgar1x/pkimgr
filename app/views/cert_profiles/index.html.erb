@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Cert Profiles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cert_profiles.each do |cert_profile| %>
+      <tr>
+        <td><%= cert_profile.name %></td>
+        <td><%= link_to 'Show', cert_profile %></td>
+        <td><%= link_to 'Edit', edit_cert_profile_path(cert_profile) %></td>
+        <td><%= link_to 'Destroy', cert_profile, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Cert Profile', new_cert_profile_path %>
