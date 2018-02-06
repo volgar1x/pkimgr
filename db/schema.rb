@@ -16,10 +16,10 @@ ActiveRecord::Schema.define(version: 20180206160231) do
   enable_extension "plpgsql"
 
   create_table "authorities", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "website"
-    t.string "password_digest"
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "website", null: false
+    t.string "password_digest", null: false
     t.text "sign_key_pem"
     t.text "encrypt_key_pem"
     t.datetime "created_at", null: false
@@ -37,16 +37,16 @@ ActiveRecord::Schema.define(version: 20180206160231) do
   end
 
   create_table "cert_profile_constraints", force: :cascade do |t|
-    t.bigint "profile_id"
-    t.string "type"
-    t.jsonb "value"
+    t.bigint "profile_id", null: false
+    t.string "type", null: false
+    t.jsonb "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["profile_id"], name: "index_cert_profile_constraints_on_profile_id"
   end
 
   create_table "cert_profiles", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
