@@ -1,0 +1,14 @@
+.middle-center
+  = form_for :session, url: session_url do |f|
+    %h1.h3.mb-3.font-weight-normal
+      Please sign in
+
+    = f.email_field :email, class: "form-control", placeholder: "Your e-mail address"
+    = f.password_field :password, class: "form-control", placeholder: "Your password"
+
+    .checkbox.mb-3
+      %label
+        = f.check_box :remember_me
+        Remember Me
+
+    = f.submit value: "Login", class: "btn btn-primary btn-lg btn-block"
