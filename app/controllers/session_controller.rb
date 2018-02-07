@@ -1,5 +1,6 @@
 class SessionController < ApplicationController
   before_action :require_unlogged
+  layout false
 
   def new
   end
