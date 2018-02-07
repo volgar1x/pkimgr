@@ -6,8 +6,8 @@ Rails.application.routes.draw do
   resources :authorities
   resources :users
 
-  resource :session, only: [:new, :create, :destroy]
+  resource :session, only: [:new, :create, :destroy], controller: "session"
 
-  root to: 'session#new'
+  root to: 'misc#dashboard'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

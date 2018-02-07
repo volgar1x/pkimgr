@@ -3,8 +3,11 @@
     %h1.h3.mb-3.font-weight-normal
       Please sign in
 
-    = f.email_field :email, class: "form-control", placeholder: "Your e-mail address"
-    = f.password_field :password, class: "form-control", placeholder: "Your password"
+    - if @error
+      .alert.alert-danger= @error
+
+    = f.email_field :email, class: "form-control", placeholder: "Your e-mail address", required: true, value: @user.try(:email)
+    = f.password_field :password, class: "form-control", placeholder: "Your password", required: true
 
     .checkbox.mb-3
       %label
