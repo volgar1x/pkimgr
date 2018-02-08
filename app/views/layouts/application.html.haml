@@ -11,7 +11,9 @@
         %button.navbar-toggler{:type => "button", :data => {:toggle => "collapse", :target => "navbar-content"}, :aria => {:controls => "navbar-content", :expanded => false, :label => "Toggle navigation"}}
           %span.navbar-toggler-icon
 
-        = link_to "Pkimgr", root_path, class: "navbar-brand"
+        = link_to root_path, class: "navbar-brand" do
+          %i.fa.fa-users
+          Pkimgr
 
         #navbar-content.collapse.navbar-collapse
           %ul.navbar-nav.mr-auto
@@ -27,10 +29,6 @@
             %li.nav-item= link_to "Test", "#", class: "nav-link"
             %li.nav-item= link_to "Test", "#", class: "nav-link"
             %li.nav-item= link_to "Test", "#", class: "nav-link"
-
-          /
-            .form-inline.my-2.my-lg-10
-              Hello
 
     .container
       = yield
