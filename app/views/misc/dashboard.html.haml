@@ -1,0 +1,45 @@
+.jumbotron
+  %h1.display-3 Welcome !
+
+  %p
+    Pkimgr is a "Public Key Infrastructure" collaborative management tool.
+    As a user, you are part of multiple authorities that can issue
+    certificates of their own and sign other authorities' certificates.
+
+.row
+  .col-4
+    %h3 Running Software
+    %ul.list-group
+      %li.list-group-item.d-flex.justify-content-between.align-items-center
+        OpenSSL
+        %span.badge.badge-secondary.badge-pill= @versions[:openssl]
+      %li.list-group-item.d-flex.justify-content-between.align-items-center
+        Ruby
+        %span.badge.badge-secondary.badge-pill= @versions[:ruby]
+      %li.list-group-item.d-flex.justify-content-between.align-items-center
+        Rails
+        %span.badge.badge-secondary.badge-pill= @versions[:rails]
+      %li.list-group-item.d-flex.justify-content-between.align-items-center
+        PostgreSQL
+        %span.badge.badge-secondary.badge-pill= @versions[:postgres]
+
+  .col-8
+    %h3 Expiring Soon
+    %table.table.table-hover
+      %thead
+        %tr
+          %th #
+          %th Certificate
+          %th Expiration
+          %th
+
+      %tbody
+        - 5.times do
+          %tr
+            %td 65535
+            %td Consulting Sec. Inc.
+            %td.timetz= 3.days.from_now.rfc2822
+            %td
+              = link_to "Open", "#"
+              &nbsp;
+              = link_to "Renew", "#"
