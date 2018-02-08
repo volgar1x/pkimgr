@@ -12,22 +12,37 @@
           %span.navbar-toggler-icon
 
         = link_to root_path, class: "navbar-brand" do
-          %i.fa.fa-users
+          %i.fab.fa-keycdn
           Pkimgr
 
         #navbar-content.collapse.navbar-collapse
           %ul.navbar-nav.mr-auto
-            %li.nav-item= link_to "Test", "#", class: "nav-link"
-            %li.nav-item= link_to "Test", "#", class: "nav-link"
-            %li.nav-item= link_to "Test", "#", class: "nav-link"
-            %li.nav-item= link_to "Test", "#", class: "nav-link"
-            %li.nav-item= link_to "Test", "#", class: "nav-link"
+            %li.nav-item= link_to "Authorities", "#", class: "nav-link", data: {toggle: "tooltip"}, title: "Manage the authorities you are part of here"
+            %li.nav-item= link_to "Certificates", "#", class: "nav-link", data: {toggle: "tooltip"}, title: "Create and show certificates you have access to"
+            %li.nav-item= link_to "Profiles", "#", class: "nav-link", data: {toggle: "tooltip"}, title: "Manage certificate profiles here (admin only)"
 
           %ul.navbar-nav
-            %li.nav-item
-              = link_to session_path, class: "nav-link", method: :delete do
-                %i.fa.fa-sign-out-alt
-                Log out
+            %li.nav-item.dropdown
+              %a.nav-link.dropdown-toggle{:href => "#", :data => {:toggle => "dropdown"}}
+                %i.fa.fa-users
+                = current_user.firstname
+                %i.caret
+              %nav.dropdown-menu
+                = link_to "#", class: "dropdown-item" do
+                  %i.fa.fa-user
+                  My Profile
+
+                = link_to "#", class: "dropdown-item" do
+                  %i.fa.fa-cog
+                  Configure
+
+                = link_to "#", class: "dropdown-item" do
+                  %i.fa.fa-unlock-alt
+                  Admin
+
+                = link_to session_path, method: :delete, class: "dropdown-item" do
+                  %i.fa.fa-sign-out-alt
+                  Log out
 
     .container
       = yield

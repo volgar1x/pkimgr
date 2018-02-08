@@ -15,3 +15,7 @@
 //= require dist/popper
 //= require dist/bootstrap
 //= require_tree .
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
