@@ -24,11 +24,10 @@
             %li.nav-item= link_to "Test", "#", class: "nav-link"
 
           %ul.navbar-nav
-            %li.nav-item= link_to "Test", "#", class: "nav-link"
-            %li.nav-item= link_to "Test", "#", class: "nav-link"
-            %li.nav-item= link_to "Test", "#", class: "nav-link"
-            %li.nav-item= link_to "Test", "#", class: "nav-link"
-            %li.nav-item= link_to "Test", "#", class: "nav-link"
+            %li.nav-item
+              = link_to session_path, class: "nav-link", method: :delete do
+                %i.fa.fa-sign-out-alt
+                Log out
 
     .container
       = yield

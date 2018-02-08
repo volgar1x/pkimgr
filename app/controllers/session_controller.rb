@@ -1,5 +1,5 @@
 class SessionController < ApplicationController
-  before_action :require_unlogged
+  before_action :require_unlogged, except: [:destroy]
   layout false
 
   def new
