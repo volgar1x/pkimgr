@@ -14,8 +14,16 @@
 //= require dist/jquery-slim
 //= require dist/popper
 //= require dist/bootstrap
+//= require dist/moment
+//= require_self
 //= require_tree .
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
+
+  $('.timetz').each(function() {
+    var $this = $(this);
+    var moment = window.moment($this.text());
+    $this.text(moment.fromNow());
+  });
 });
