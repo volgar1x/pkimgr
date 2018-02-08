@@ -5,6 +5,34 @@
     %title Pkimgr
     = csrf_meta_tags
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
-    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
-    = yield
+    %nav.navbar.navbar-dark.bg-dark.navbar-expand-md
+      .container
+        %button.navbar-toggler{:type => "button", :data => {:toggle => "collapse", :target => "navbar-content"}, :aria => {:controls => "navbar-content", :expanded => false, :label => "Toggle navigation"}}
+          %span.navbar-toggler-icon
+
+        = link_to "Pkimgr", root_path, class: "navbar-brand"
+
+        #navbar-content.collapse.navbar-collapse
+          %ul.navbar-nav.mr-auto
+            %li.nav-item= link_to "Test", "#", class: "nav-link"
+            %li.nav-item= link_to "Test", "#", class: "nav-link"
+            %li.nav-item= link_to "Test", "#", class: "nav-link"
+            %li.nav-item= link_to "Test", "#", class: "nav-link"
+            %li.nav-item= link_to "Test", "#", class: "nav-link"
+
+          %ul.navbar-nav
+            %li.nav-item= link_to "Test", "#", class: "nav-link"
+            %li.nav-item= link_to "Test", "#", class: "nav-link"
+            %li.nav-item= link_to "Test", "#", class: "nav-link"
+            %li.nav-item= link_to "Test", "#", class: "nav-link"
+            %li.nav-item= link_to "Test", "#", class: "nav-link"
+
+          /
+            .form-inline.my-2.my-lg-10
+              Hello
+
+    .container
+      = yield
+
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
