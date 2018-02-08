@@ -17,22 +17,23 @@
 
         #navbar-content.collapse.navbar-collapse
           %ul.navbar-nav.mr-auto
-            %li.nav-item= link_to "Authorities", "#", class: "nav-link", data: {toggle: "tooltip"}, title: "Manage the authorities you are part of here"
-            %li.nav-item= link_to "Certificates", "#", class: "nav-link", data: {toggle: "tooltip"}, title: "Create and show certificates you have access to"
-            %li.nav-item= link_to "Profiles", "#", class: "nav-link", data: {toggle: "tooltip"}, title: "Manage certificate profiles here (admin only)"
+            %li.nav-item= link_to "Authorities", authorities_path, class: "nav-link", data: {toggle: "tooltip"}, title: "Manage the authorities you are part of here"
+            %li.nav-item= link_to "Certificates", certificates_path, class: "nav-link", data: {toggle: "tooltip"}, title: "Create and show certificates you have access to"
+            %li.nav-item= link_to "Profiles", cert_profiles_path, class: "nav-link", data: {toggle: "tooltip"}, title: "Manage certificate profiles here (admin only)"
 
           %ul.navbar-nav
             %li.nav-item.dropdown
-              %a.nav-link.dropdown-toggle{:href => "#", :data => {:toggle => "dropdown"}}
+              = link_to user_path(current_user.id), class: "nav-link dropdown-toggle", data: {toggle: "dropdown"} do
                 %i.fa.fa-users
                 = current_user.firstname
                 %i.caret
+
               %nav.dropdown-menu
-                = link_to "#", class: "dropdown-item" do
+                = link_to user_path(current_user.id), class: "dropdown-item" do
                   %i.fa.fa-user
                   My Profile
 
-                = link_to "#", class: "dropdown-item" do
+                = link_to edit_profile_path, class: "dropdown-item" do
                   %i.fa.fa-cog
                   Configure
 
