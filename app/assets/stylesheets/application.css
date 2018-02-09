@@ -12,6 +12,7 @@
  *
  *= require dist/bootstrap
  *= require dist/fontawesome-all
+ *= require_tree ./shared
  *= require_tree .
  *= require_self
  */

@@ -1,0 +1,41 @@
+%h1 Configure
+
+= form_for current_user, url: profile_path do |f|
+  .form-label-group
+    = f.email_field :email, class: "form-control", placeholder: "E-mail Address", required: true
+    = f.label :email, "E-mail Address"
+
+  .form-label-group
+    = f.text_field :firstname, class: "form-control", placeholder: "First Name", required: true
+    = f.label :firstname, "First Name"
+
+  .form-label-group
+    = f.text_field :lastname, class: "form-control", placeholder: "Last Name", required: true
+    = f.label :lastname, "Last Name"
+
+  .form-label-group
+    = f.text_field :street, class: "form-control", placeholder: "Street", required: true
+    = f.label :street, "Street"
+
+  .form-label-group
+    = f.text_field :street2, class: "form-control", placeholder: "Street (additional)", required: true
+    = f.label :street2, "Street (additional)"
+
+  .row
+    .form-label-group.col-4
+      = f.text_field :city, class: "form-control", placeholder: "City", required: true
+      = f.label :city, "City"
+
+    .form-label-group.col-4
+      = f.text_field :zip, class: "form-control", placeholder: "ZIP", required: true
+      = f.label :zip, "ZIP"
+
+    .form-label-group.col-4
+      = f.text_field :country, class: "form-control", placeholder: "Country", required: true
+      = f.label :country, "Country"
+
+  .form-label-group
+    = f.text_field :phone, class: "form-control", placeholder: "Phone", required: true
+    = f.label :phone, "Phone"
+
+  = f.submit "Update Your Profile", class: "btn btn-primary btn-lg"
