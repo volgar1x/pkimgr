@@ -7,7 +7,7 @@
     certificates of their own and sign other authorities' certificates.
 
 .row
-  .col-4
+  .col-md-4
     %h3 Running Software
     %ul.list-group
       %li.list-group-item.d-flex.justify-content-between.align-items-center
@@ -23,12 +23,12 @@
         PostgreSQL
         %span.badge.badge-secondary.badge-pill= @versions[:postgres]
 
-  .col-8
+  .col-md-8
     %h3 Expiring Soon
     %table.table.table-hover
       %thead
         %tr
-          %th #
+          %th.visible-md #
           %th Certificate
           %th Expiration
           %th
@@ -36,7 +36,7 @@
       %tbody
         - 5.times do
           %tr
-            %td 65535
+            %td.visible-md 65535
             %td Consulting Sec. Inc.
             %td.timetz= 3.days.from_now.rfc2822
             %td

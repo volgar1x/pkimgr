@@ -46,6 +46,18 @@
                   Log out
 
     %main.container
+      - flash.each do |name, msg|
+        - if name.to_s == "notice"
+          - classes = "alert alert-success"
+        - elsif name.to_s == "error"
+          - classes = "alert alert-danger"
+        - else
+          - classes = "alert alert-secondary"
+        .row{:class => classes}
+          %p.mb-0.col-10= msg
+          .col-2.text-right
+            %i.fa.fa-times.close-alert-btn{:title => "Click to dismiss this message", :data => {:toggle => "tooltip"}}
+
       = yield
 
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'

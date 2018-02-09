@@ -1,19 +1,17 @@
+@import "variables";
+
 :root {
   --input-padding-x: .75rem;
   --input-padding-y: .75rem;
 }
 
+@include each-col($prefix: ".form-label-group") {
+  label { margin-left: 1rem; }
+}
+
 .form-label-group {
   position: relative;
   margin-bottom: 1rem;
-
-  %label-styles {
-    margin-left: 1rem;
-  }
-  &.col label { @extend %label-styles; }
-  @for $i from 1 through 12 {
-    &.col-#{$i} label { @extend %label-styles; }
-  }
 
   & > input, & > label {
     padding: var(--input-padding-y) var(--input-padding-x);

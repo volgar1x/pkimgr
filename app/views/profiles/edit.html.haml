@@ -6,33 +6,33 @@
     = f.label :email, "E-mail Address"
 
   .row
-    .form-label-group.col
+    .form-label-group.col-md
       = f.text_field :firstname, class: "form-control", placeholder: "First Name", required: true
       = f.label :firstname, "First Name"
 
-    .form-label-group.col
+    .form-label-group.col-md
       = f.text_field :lastname, class: "form-control", placeholder: "Last Name", required: true
       = f.label :lastname, "Last Name"
 
   .row
-    .form-label-group.col
+    .form-label-group.col-md
       = f.text_field :street, class: "form-control", placeholder: "Street", required: true
       = f.label :street, "Street"
 
-    .form-label-group.col
+    .form-label-group.col-md
       = f.text_field :street2, class: "form-control", placeholder: "Street (additional)"
       = f.label :street2, "Street (additional)"
 
   .row
-    .form-label-group.col
+    .form-label-group.col-md
       = f.text_field :city, class: "form-control", placeholder: "City", required: true
       = f.label :city, "City"
 
-    .form-label-group.col
+    .form-label-group.col-md
       = f.text_field :zip, class: "form-control", placeholder: "ZIP", required: true
       = f.label :zip, "ZIP"
 
-    .form-label-group.col
+    .form-label-group.col-md
       = f.text_field :country, class: "form-control", placeholder: "Country", required: true
       = f.label :country, "Country"
 
@@ -40,4 +40,12 @@
     = f.text_field :phone, class: "form-control", placeholder: "Phone", required: true
     = f.label :phone, "Phone"
 
-  = f.submit "Update Your Profile", class: "btn btn-primary btn-lg"
+  .row
+    .col-md
+      %button.btn.btn-primary.btn-lg{:type => "submit"}
+        %i.fa.fa-edit
+        Update Your Profile
+    .col.text-right-md
+      = link_to profile_path, class: "btn btn-danger btn-lg", method: :delete, data: {confirm: "Are you sure you want to delete your account?"} do
+        %i.fa.fa-trash
+        Delete Your Profile

@@ -26,4 +26,10 @@ $(function () {
     var moment = window.moment($this.text());
     $this.text(moment.fromNow());
   });
+
+  $('.close-alert-btn').click(function() {
+    var $this = $(this);
+    $this.tooltip('hide');
+    $this.parents('.alert').first().remove();
+  });
 });

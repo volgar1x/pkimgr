@@ -1,0 +1,22 @@
+@import "variables";
+
+@mixin text-right {
+  text-align: right;
+}
+
+@mixin display-none {
+  display: none;
+}
+
+@each $size in $sizes {
+  @media screen and (min-width: map-get($sizes-breakpoints, $size)) {
+    .text-right-#{$size} {
+      @include text-right;
+    }
+  }
+  @media screen and (max-width: map-get($sizes-breakpoints, $size)) {
+    .visible-#{$size} {
+      @include display-none;
+    }
+  }
+}

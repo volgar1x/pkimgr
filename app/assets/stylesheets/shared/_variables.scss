@@ -1,0 +1,22 @@
+$grid-columns: 12;
+$sizes: sm md lg xl;
+$sizes-breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+);
+
+@mixin each-col($prefix: "") {
+  %each-col-base { @content; }
+  #{$prefix}.col { @extend %each-col-base; }
+  @for $i from 1 through 12 {
+    #{$prefix}.col-#{$i} { @extend %each-col-base; }
+  }
+  @each $size in $sizes {
+    #{$prefix}.col-#{$size} { @extend %each-col-base; }
+    @for $i from 1 through $grid-columns {
+      #{$prefix}.col-#{$size}-#{$i} { @extend %each-col-base; }
+    }
+  }
+}
