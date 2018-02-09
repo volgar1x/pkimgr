@@ -7,12 +7,12 @@
   position: relative;
   margin-bottom: 1rem;
 
+  %label-styles {
+    margin-left: 1rem;
+  }
+  &.col label { @extend %label-styles; }
   @for $i from 1 through 12 {
-    &.col-#{$i} {
-      label {
-        margin-left: 1rem;
-      }
-    }
+    &.col-#{$i} label { @extend %label-styles; }
   }
 
   & > input, & > label {
