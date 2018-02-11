@@ -15,6 +15,9 @@ class ProfilesController < SecureController
   end
 
   def destroy
+    current_user.destroy
+    reset_session
+    redirect_to new_session_path, notice: "Your profile has been deleted."
   end
 
 private
