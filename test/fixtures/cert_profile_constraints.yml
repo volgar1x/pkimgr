@@ -2,10 +2,10 @@
 
 one:
   profile: one
-  type: 
-  value: 
+  type: subject_key_type
+  value: {"type": "rsa"}
 
 two:
   profile: two
-  type: 
-  value: 
+  type: subject_key_size
+  value: {"size": 4096}

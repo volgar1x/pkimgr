@@ -2,12 +2,12 @@
 
 one:
   subject: one
-  subject_type: Subject
+  subject_type: Authority
   profile: one
   pem: MyText
 
 two:
   subject: two
-  subject_type: Subject
+  subject_type: Authority
   profile: two
   pem: MyText

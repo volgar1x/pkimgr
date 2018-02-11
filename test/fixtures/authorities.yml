@@ -1,17 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  email: MyString
-  website: MyString
+  name: MyString1
+  email: MyString1
+  website: MyString1
   password_digest: <%= BCrypt::Password.create('secret') %>
   sign_key_pem: MyText
   encrypt_key_pem: MyText
 
 two:
-  name: MyString
-  email: MyString
-  website: MyString
+  name: MyString2
+  email: MyString2
+  website: MyString2
   password_digest: <%= BCrypt::Password.create('secret') %>
   sign_key_pem: MyText
   encrypt_key_pem: MyText

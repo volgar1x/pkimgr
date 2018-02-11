@@ -1,10 +1,10 @@
-class AuthoritiesController < ApplicationController
+class AuthoritiesController < SecureController
   before_action :set_authority, only: [:show, :edit, :update, :destroy]
 
   # GET /authorities
   # GET /authorities.json
   def index
-    @authorities = Authority.all
+    @authorities = current_user.authorities
   end
 
   # GET /authorities/1
