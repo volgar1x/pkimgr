@@ -53,10 +53,9 @@
           - classes = "alert alert-danger"
         - else
           - classes = "alert alert-secondary"
-        .row{:class => classes}
-          %p.mb-0.col-10= msg
-          .col-2.text-right
-            %i.fa.fa-times.close-alert-btn{:title => "Click to dismiss this message", :data => {:toggle => "tooltip"}}
+        .flash{:class => classes}
+          %p= msg
+          %i.fa.fa-times.close-alert-btn{:title => "Click to dismiss this message", :data => {:toggle => "tooltip"}}
 
       = yield
 

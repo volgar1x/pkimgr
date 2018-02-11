@@ -1,3 +1,14 @@
-.close-alert-btn {
-  cursor: pointer;
+.flash {
+  display: flex;
+  flex-direction: row;
+
+  p {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .close-alert-btn {
+    cursor: pointer;
+    align-self: center;
+  }
 }
