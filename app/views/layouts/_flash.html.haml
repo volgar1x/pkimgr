@@ -1,0 +1,10 @@
+- flash.each do |name, msg|
+  - if name.to_s == "notice"
+    - classes = "alert alert-success"
+  - elsif name.to_s == "error"
+    - classes = "alert alert-danger"
+  - else
+    - classes = "alert alert-secondary"
+  .flash{:class => classes}
+    %p= msg
+    %i.fa.fa-times.close-alert-btn{:title => "Click to dismiss this message", :data => {:toggle => "tooltip"}}

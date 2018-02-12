@@ -1,0 +1,38 @@
+%nav.navbar.navbar-dark.bg-dark.navbar-expand-md
+  .container
+    %button.navbar-toggler{:type => "button", :data => {:toggle => "collapse", :target => "navbar-content"}, :aria => {:controls => "navbar-content", :expanded => false, :label => "Toggle navigation"}}
+      %span.navbar-toggler-icon
+
+    = link_to root_path, class: "navbar-brand" do
+      %i.fab.fa-keycdn
+      Pkimgr
+
+    #navbar-content.collapse.navbar-collapse
+      %ul.navbar-nav.mr-auto
+        = nav_link "Authorities", authorities_path, data: {toggle: "tooltip"}, title: "Manage the authorities you are part of here"
+        = nav_link "Certificates", certificates_path, data: {toggle: "tooltip"}, title: "Create and show certificates you have access to"
+        = nav_link "Profiles", cert_profiles_path, data: {toggle: "tooltip"}, title: "Manage certificate profiles here (admin only)"
+
+      %ul.navbar-nav
+        %li.nav-item.dropdown
+          = link_to user_path(current_user.id), class: "nav-link dropdown-toggle", data: {toggle: "dropdown"} do
+            %i.fa.fa-users
+            = current_user.firstname
+            %i.caret
+
+          %nav.dropdown-menu
+            = link_to user_path(current_user.id), class: "dropdown-item" do
+              %i.fa.fa-user
+              My Profile
+
+            = link_to edit_profile_path, class: "dropdown-item" do
+              %i.fa.fa-cog
+              Configure
+
+            = link_to "#", class: "dropdown-item" do
+              %i.fa.fa-unlock-alt
+              Admin
+
+            = link_to session_path, method: :delete, class: "dropdown-item" do
+              %i.fa.fa-sign-out-alt
+              Log out

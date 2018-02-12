@@ -6,57 +6,10 @@
     = csrf_meta_tags
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
   %body
-    %nav.navbar.navbar-dark.bg-dark.navbar-expand-md
-      .container
-        %button.navbar-toggler{:type => "button", :data => {:toggle => "collapse", :target => "navbar-content"}, :aria => {:controls => "navbar-content", :expanded => false, :label => "Toggle navigation"}}
-          %span.navbar-toggler-icon
-
-        = link_to root_path, class: "navbar-brand" do
-          %i.fab.fa-keycdn
-          Pkimgr
-
-        #navbar-content.collapse.navbar-collapse
-          %ul.navbar-nav.mr-auto
-            %li.nav-item= link_to "Authorities", authorities_path, class: "nav-link", data: {toggle: "tooltip"}, title: "Manage the authorities you are part of here"
-            %li.nav-item= link_to "Certificates", certificates_path, class: "nav-link", data: {toggle: "tooltip"}, title: "Create and show certificates you have access to"
-            %li.nav-item= link_to "Profiles", cert_profiles_path, class: "nav-link", data: {toggle: "tooltip"}, title: "Manage certificate profiles here (admin only)"
-
-          %ul.navbar-nav
-            %li.nav-item.dropdown
-              = link_to user_path(current_user.id), class: "nav-link dropdown-toggle", data: {toggle: "dropdown"} do
-                %i.fa.fa-users
-                = current_user.firstname
-                %i.caret
-
-              %nav.dropdown-menu
-                = link_to user_path(current_user.id), class: "dropdown-item" do
-                  %i.fa.fa-user
-                  My Profile
-
-                = link_to edit_profile_path, class: "dropdown-item" do
-                  %i.fa.fa-cog
-                  Configure
-
-                = link_to "#", class: "dropdown-item" do
-                  %i.fa.fa-unlock-alt
-                  Admin
-
-                = link_to session_path, method: :delete, class: "dropdown-item" do
-                  %i.fa.fa-sign-out-alt
-                  Log out
+    = render "layouts/navbar"
 
     %main.container
-      - flash.each do |name, msg|
-        - if name.to_s == "notice"
-          - classes = "alert alert-success"
-        - elsif name.to_s == "error"
-          - classes = "alert alert-danger"
-        - else
-          - classes = "alert alert-secondary"
-        .flash{:class => classes}
-          %p= msg
-          %i.fa.fa-times.close-alert-btn{:title => "Click to dismiss this message", :data => {:toggle => "tooltip"}}
-
+      = render "layouts/flash"
       = yield
 
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
