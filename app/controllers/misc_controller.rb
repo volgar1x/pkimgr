@@ -4,7 +4,7 @@ class MiscController < SecureController
       openssl: OpenSSL::OPENSSL_VERSION.split(' ')[1],
       ruby: `ruby -v`.split(' ')[1],
       rails: `rails -v`.split(' ')[1],
-      postgres: `postgres -V`.split(' ')[2],
+      postgres: `psql -V`.split(' ')[2],
     }
   end
 end
