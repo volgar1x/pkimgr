@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :certificates
+  resources :certificates do
+    get "renew" => :renew, on: :member
+  end
   resources :cert_signing_requests
   resources :cert_profile_constraints
   resources :cert_profiles
@@ -10,6 +12,8 @@ Rails.application.routes.draw do
     post "genpkey" => :genpkey, on: :member
     get "pkey" => :start_pkey, on: :member
     post "pkey" => :pkey, on: :member
+
+    resources :certificates, shallow: true
   end
   resources :users
 

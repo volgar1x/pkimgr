@@ -25,21 +25,4 @@
 
   .col-md-8
     %h3 Expiring Soon
-    %table.table.table-hover
-      %thead
-        %tr
-          %th.visible-md #
-          %th Certificate
-          %th Expiration
-          %th
-
-      %tbody
-        - 5.times do
-          %tr
-            %td.visible-md 65535
-            %td Consulting Sec. Inc.
-            %td.timetz= 3.days.from_now.rfc2822
-            %td
-              = link_to "Open", "#"
-              &nbsp;
-              = link_to "Renew", "#"
+    = render "certificates/table", certificates: []

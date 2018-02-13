@@ -17,3 +17,5 @@
 
     = link_to "Import", import_authority_path(@authority), class: "btn"
     = link_to "Generate", genpkey_authority_path(@authority), class: "btn"
+
+= render "certificates/table", certificates: @authority.certificates

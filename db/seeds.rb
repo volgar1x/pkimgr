@@ -13,3 +13,13 @@ user.authorities.create([
   { name: "Hello2", email: "hello2@hello.hello", website: "http://hello2.hello", password: "hello" },
   { name: "Hello3", email: "hello3@hello.hello", website: "http://hello3.hello", password: "hello" },
 ])
+
+p = CertProfile.create name: "(empty)"
+
+a = user.authorities.first!
+a.certificates.create(
+  issuer: a,
+  subject: a,
+  profile: p,
+  pem: "",
+)

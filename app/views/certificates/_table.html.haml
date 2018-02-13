@@ -1,0 +1,20 @@
+%table.table.table-hover
+  %thead
+    %tr
+      %th.visible-md #
+      %th Issuer
+      %th Subject
+      %th Expiration
+      %th
+
+  %tbody
+    - certificates.each do |cert|
+      %tr
+        %td.visible-md= cert.id
+        %td= render cert.issuer
+        %td= render cert.subject
+        %td.timetz= cert.expires.rfc2822
+        %td
+          = link_to "Open", cert
+          &nbsp;
+          = link_to "Renew", renew_certificate_path(cert)
