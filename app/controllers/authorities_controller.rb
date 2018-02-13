@@ -146,14 +146,14 @@ class AuthoritiesController < SecureController
     end
   end
 
-  # GET /authorities/1/pkey
-  def start_pkey
+  # GET /authorities/1/export
+  def start_export
   end
 
-  # POST /authorities/1/pkey
-  # POST /authorities/1/pkey.json
-  def pkey
-    pkey_params = params.require("authority_pkey")
+  # POST /authorities/1/export
+  # POST /authorities/1/export.json
+  def export
+    pkey_params = params.require("authority_export")
 
     unless @authority.authenticate(pkey_params["password"])
       @errors = {password: "Invalid password"}

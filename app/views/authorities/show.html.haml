@@ -1,21 +1,15 @@
 %h1.display-3= @authority.name
 
-- if @authority.encrypt_key_pem
-  = link_to "Export Encryption Key", pkey_authority_path(@authority, usage: "encrypt"), class: "btn btn-light"
-- else
-  .alert.alert-warning
-    %p This authority does not have any encryption key. Please generate or import one.
+- unless @authority.encrypt_key_pem
+  .alert.alert-warning This authority does not have any encryption key. Please generate or import one.
 
-    = link_to "Import", import_authority_path(@authority), class: "btn"
-    = link_to "Generate", genpkey_authority_path(@authority), class: "btn"
+- unless @authority.sign_key_pem
+  .alert.alert-warning This authority does not have any signature key. Please generate or import one.
 
-- if @authority.sign_key_pem
-  = link_to "Export Signature Key", pkey_authority_path(@authority, usage: "sign"), class: "btn btn-light"
-- else
-  .alert.alert-warning
-    %p This authority does not have any signature key. Please generate or import one.
-
-    = link_to "Import", import_authority_path(@authority), class: "btn"
-    = link_to "Generate", genpkey_authority_path(@authority), class: "btn"
+%div{:style => "margin-bottom: 1rem"}
+  = link_to "Import Private Key", import_authority_path(@authority), class: "btn btn-light"
+  = link_to "Generate Private Key", genpkey_authority_path(@authority), class: "btn btn-light"
+  = link_to "Export Private Key", export_authority_path(@authority), class: "btn btn-light"
+  = link_to "Request Certificate from us", new_authority_cert_signing_request_path(@authority), class: "btn btn-light"
 
 = render "certificates/table", certificates: @authority.certificates

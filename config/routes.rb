@@ -2,18 +2,18 @@ Rails.application.routes.draw do
   resources :certificates do
     get "renew" => :renew, on: :member
   end
-  resources :cert_signing_requests
-  resources :cert_profile_constraints
-  resources :cert_profiles
+  resources :cert_signing_requests, path: "cert/requests"
+  resources :cert_profiles, path: "cert/profiles"
   resources :authorities do
     get "import" => :start_import, on: :member
     post "import" => :import, on: :member
     get "genpkey" => :start_genpkey, on: :member
     post "genpkey" => :genpkey, on: :member
-    get "pkey" => :start_pkey, on: :member
-    post "pkey" => :pkey, on: :member
+    get "export" => :start_export, on: :member
+    post "export" => :export, on: :member
 
     resources :certificates, shallow: true
+    resources :cert_signing_requests, shallow: true, path: "csr"
   end
   resources :users
 
