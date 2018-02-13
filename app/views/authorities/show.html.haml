@@ -1,13 +1,17 @@
 %h1.display-3= @authority.name
 
-- unless @authority.encrypt_key_pem
+- if @authority.encrypt_key_pem
+  = link_to "Export Encryption Key", pkey_authority_path(@authority, usage: "encrypt"), class: "btn btn-light"
+- else
   .alert.alert-warning
     %p This authority does not have any encryption key. Please generate or import one.
 
     = link_to "Import", keys_authority_path(@authority), class: "btn"
     = link_to "Generate", genpkey_authority_path(@authority), class: "btn"
 
-- unless @authority.sign_key_pem
+- if @authority.sign_key_pem
+  = link_to "Export Signature Key", pkey_authority_path(@authority, usage: "sign"), class: "btn btn-light"
+- else
   .alert.alert-warning
     %p This authority does not have any signature key. Please generate or import one.
 

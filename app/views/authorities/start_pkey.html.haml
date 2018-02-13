@@ -1,0 +1,17 @@
+= form_tag nil, method: "post" do
+  .form-group
+    = check_box_tag "authority_pkey[usage][]", "encrypt", params["usage"] == "encrypt", id: "authority_pkey_usage_encrypt"
+    = label_tag "authority_pkey_usage_encrypt", "Encryption"
+    = check_box_tag "authority_pkey[usage][]", "sign", params["usage"] == "sign", id: "authority_pkey_usage_sign"
+    = label_tag "authority_pkey_usage_sign", "Signature"
+
+  .form-label-group
+    = password_field_tag "authority_pkey[password]", nil, class: ["form-control", @errors && @errors[:password] && "is-invalid"], placeholder: "Password"
+    = label_tag "authority_pkey[password]", "Password"
+    - if @errors && @errors[:password]
+      .invalid-feedback= @errors[:password]
+
+  .form-group
+    %button.btn.btn-primary{:type => ":submit"}
+      %i.fa.fa-share
+      Export

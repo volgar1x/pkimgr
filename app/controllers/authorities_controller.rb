@@ -121,6 +121,41 @@ class AuthoritiesController < SecureController
     end
   end
 
+  # GET /authorities/1/pkey
+  def start_pkey
+  end
+
+  # POST /authorities/1/pkey
+  # POST /authorities/1/pkey.json
+  def pkey
+    pkey_params = params.require("authority_pkey")
+    if @authority.authenticate(pkey_params["password"])
+      case pkey_params["usage"].to_set
+      when Set["encrypt", "sign"] then
+        buffer = Zip::OutputStream.write_buffer do |out|
+          out.put_next_entry("#{@authority.name}_keys/encrypt_key.pem")
+          out.write(@authority.encrypt_key_pem)
+
+          out.put_next_entry("#{@authority.name}_keys/sign_key.pem")
+          out.write(@authority.sign_key_pem)
+        end
+        send_data buffer.string, filename: "#{@authority.name}_keys.zip", type: "application/zip"
+
+      when Set["encrypt"] then
+        send_data @authority.encrypt_key_pem, filename: "#{@authority.name}_encrypt_key.pem", type: "application/x-pem-file"
+
+      when Set["sign"] then
+        send_data @authority.sign_key_pem, filename: "#{@authority.name}_sign_key.pem", type: "application/x-pem-file"
+
+      else
+        render :start_pkey
+      end
+    else
+      @errors = {password: "Invalid password"}
+      render :start_pkey
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_authority

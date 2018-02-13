@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     patch "keys" => :update_keys, on: :member
     get "genpkey" => :edit_genpkey, on: :member
     patch "genpkey" => :update_genpkey, on: :member
+    get "pkey" => :start_pkey, on: :member
+    post "pkey" => :pkey, on: :member
   end
   resources :users
 
