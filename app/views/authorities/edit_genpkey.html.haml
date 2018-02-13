@@ -1,0 +1,29 @@
+= form_tag nil, method: "patch" do
+  .form-group.row
+    .col-md-10.offset-md-2
+      = check_box_tag "authority_genpkey[usage][]", "encrypt", !@authority.encrypt_key_pem, id: "authority_genpkey_usage_encrypt"
+      = label_tag "authority_genpkey_usage_encrypt", "Encryption"
+      = check_box_tag "authority_genpkey[usage][]", "sign", !@authority.sign_key_pem, id: "authority_genpkey_usage_sign"
+      = label_tag "authority_genpkey_usage_sign", "Signature"
+
+  .form-group.row
+    = label_tag "authority_genpkey[algorithm]", "Algorithm", class: "col-md-2"
+    = select_tag "authority_genpkey[algorithm]", options_for_select(["RSA", "DSA", "ECDSA"]), class: "form-control col-md-10"
+
+  .form-group.row
+    = label_tag "authority_genpkey[keysize]", "Key Size", class: "col-md-2"
+    = text_field_tag "authority_genpkey[keysize]", "3072", class: "form-control col-md-10"
+
+  .form-group.row
+    = label_tag "authority_genpkey[curve]", "Curve (ECDSA only)", class: "col-md-2"
+    = select_tag "authority_genpkey[curve]", options_for_select(OpenSSL::PKey::EC.builtin_curves.map{|x| x[0]}), class: "form-control col-md-10"
+
+  .form-group.row
+    .col-md
+      %button.btn.btn-primary{:type => "submit"}
+        %i.fa.fa-sync-alt
+        Generate
+    .col-md.text-right-md
+      = link_to @authority, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back

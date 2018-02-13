@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   resources :authorities do
     get "keys" => :edit_keys, on: :member
     patch "keys" => :update_keys, on: :member
+    get "genpkey" => :edit_genpkey, on: :member
+    patch "genpkey" => :update_genpkey, on: :member
   end
   resources :users
 

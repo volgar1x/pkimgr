@@ -1,5 +1,5 @@
 class AuthoritiesController < SecureController
-  before_action :set_authority, only: [:show, :edit, :update, :destroy, :edit_keys, :update_keys]
+  before_action :set_authority, except: [:index, :new, :create]
 
   # GET /authorities
   # GET /authorities.json
@@ -68,8 +68,8 @@ class AuthoritiesController < SecureController
   def edit_keys
   end
 
-  # POST /authorities/1/keys
-  # POST /authorities/1/keys.json
+  # PATCH /authorities/1/keys
+  # PATCH /authorities/1/keys.json
   def update_keys
     encrypt_key_file, sign_key_file = params.require(:authority).values_at(:encrypt_key_pem, :sign_key_pem)
     if encrypt_key_file
@@ -82,6 +82,41 @@ class AuthoritiesController < SecureController
 
     respond_to do |format|
       format.html { redirect_to @authority, notice: "New private keys have successfully been imported." }
+      format.json { render :show, status: :ok, location: @authority }
+    end
+  end
+
+  # GET /authorities/1/genpkey
+  def edit_genpkey
+  end
+
+  # PATCH /authorities/1/genpkey
+  # PATCH /authorities/1/genpkey.json
+  def update_genpkey
+    genpkey_params = params.require("authority_genpkey")
+
+    def genpkey(genpkey_params)
+      key = case genpkey_params["algorithm"]
+      when "RSA" then OpenSSL::PKey::RSA.generate(genpkey_params["keysize"].to_i)
+      when "DSA" then OpenSSL::PKey::DSA.generate(genpkey_params["keysize"].to_i)
+      when "ECDSA" then OpenSSL::PKey::EC.generate(genpkey_params["curve"])
+      end
+
+      key.to_pem
+    end
+
+    if genpkey_params["usage"].include? "encrypt"
+      @authority.encrypt_key_pem = genpkey(genpkey_params)
+    end
+
+    if genpkey_params["usage"].include? "sign"
+      @authority.sign_key_pem = genpkey(genpkey_params)
+    end
+
+    @authority.save!
+
+    respond_to do |format|
+      format.html { redirect_to @authority, notice: "New private keys have successfully been generated." }
       format.json { render :show, status: :ok, location: @authority }
     end
   end
