@@ -64,19 +64,41 @@ class AuthoritiesController < SecureController
     end
   end
 
-  # GET /authorities/1/keys
-  def edit_keys
+  # GET /authorities/1/import
+  def start_import
   end
 
-  # PATCH /authorities/1/keys
-  # PATCH /authorities/1/keys.json
-  def update_keys
-    encrypt_key_file, sign_key_file = params.require(:authority).values_at(:encrypt_key_pem, :sign_key_pem)
-    if encrypt_key_file
-      @authority.encrypt_key_pem = encrypt_key_file.read
+  # POST /authorities/1/import
+  # POST /authorities/1/import.json
+  def import
+    import_params = params.require("authority_import")
+
+    unless @authority.authenticate(import_params["password"])
+      @errors = {password: "Invalid Password"}
+      return render :start_import
     end
-    if sign_key_file
-      @authority.sign_key_pem = sign_key_file.read
+
+    if encrypt_key_file = import_params["encrypt_key_pem"]
+      encrypt_key_pem = encrypt_key_file.read
+      begin
+        encrypt_key = OpenSSL::PKey.read(encrypt_key_pem, import_params["password"])
+      rescue OpenSSL::PKey::PKeyError
+        @errors = {encrypt_key_pem: "Password supplied must have encrypted this file"}
+        return render :start_import
+      end
+
+      @authority.encrypt_key_pem = encrypt_key_pem
+    end
+    if sign_key_file = import_params["sign_key_pem"]
+      sign_key_pem = sign_key_file.read
+      begin
+        sign_key = OpenSSL::PKey.read(sign_key_pem, import_params["password"])
+      rescue OpenSSL::PKey::PKeyError
+        @errors = {sign_key_pem: "Password supplied must have encrypted this file"}
+        return render :start_import
+      end
+
+      @authority.sign_key_pem = sign_key_pem
     end
     @authority.save!
 
@@ -87,30 +109,33 @@ class AuthoritiesController < SecureController
   end
 
   # GET /authorities/1/genpkey
-  def edit_genpkey
+  def start_genpkey
   end
 
-  # PATCH /authorities/1/genpkey
-  # PATCH /authorities/1/genpkey.json
-  def update_genpkey
+  # POST /authorities/1/genpkey
+  # POST /authorities/1/genpkey.json
+  def genpkey
     genpkey_params = params.require("authority_genpkey")
 
-    def genpkey(genpkey_params)
-      key = case genpkey_params["algorithm"]
+    unless @authority.authenticate(genpkey_params["password"])
+      @errors = {password: "Invalid password"}
+      return render :start_genpkey
+    end
+
+    def key_generation(genpkey_params)
+      case genpkey_params["algorithm"]
       when "RSA" then OpenSSL::PKey::RSA.generate(genpkey_params["keysize"].to_i)
       when "DSA" then OpenSSL::PKey::DSA.generate(genpkey_params["keysize"].to_i)
       when "ECDSA" then OpenSSL::PKey::EC.generate(genpkey_params["curve"])
       end
-
-      key.to_pem
     end
 
     if genpkey_params["usage"].include? "encrypt"
-      @authority.encrypt_key_pem = genpkey(genpkey_params)
+      @authority.set_encrypt_key key_generation(genpkey_params["encrypt"]), genpkey_params["password"]
     end
 
     if genpkey_params["usage"].include? "sign"
-      @authority.sign_key_pem = genpkey(genpkey_params)
+      @authority.set_sign_key key_generation(genpkey_params["sign"]), genpkey_params["password"]
     end
 
     @authority.save!
@@ -129,33 +154,34 @@ class AuthoritiesController < SecureController
   # POST /authorities/1/pkey.json
   def pkey
     pkey_params = params.require("authority_pkey")
-    if @authority.authenticate(pkey_params["password"])
-      case pkey_params["usage"]
-      when ["encrypt", "sign"] then
-        buffer = Zip::OutputStream.write_buffer do |out|
-          out.put_next_entry("#{@authority.name}_keys/encrypt_key.pem")
-          out.write(@authority.encrypt_key.to_pem("AES-256-CTR", pkey_params["password"]))
 
-          out.put_next_entry("#{@authority.name}_keys/sign_key.pem")
-          out.write(@authority.sign_key.to_pem("AES-256-CTR", pkey_params["password"]))
-        end
-        send_data buffer.string, filename: "#{@authority.name}_keys.zip", type: "application/zip"
-
-      when ["encrypt"] then
-        send_data @authority.encrypt_key.to_pem("AES-256-CTR", pkey_params["password"]),
-                  filename: "#{@authority.name}_encrypt_key.pem",
-                  type: "application/x-pem-file"
-
-      when ["sign"] then
-        send_data @authority.sign_key.to_pem("AES-256-CTR", pkey_params["password"]),
-                  filename: "#{@authority.name}_sign_key.pem",
-                  type: "application/x-pem-file"
-
-      else
-        render :start_pkey
-      end
-    else
+    unless @authority.authenticate(pkey_params["password"])
       @errors = {password: "Invalid password"}
+      return render :start_pkey
+    end
+
+    case pkey_params["usage"]
+    when ["encrypt", "sign"] then
+      buffer = Zip::OutputStream.write_buffer do |out|
+        out.put_next_entry("#{@authority.name}_keys/encrypt_key.pem")
+        out.write(@authority.encrypt_key_pem)
+
+        out.put_next_entry("#{@authority.name}_keys/sign_key.pem")
+        out.write(@authority.sign_key_pem)
+      end
+      send_data buffer.string, filename: "#{@authority.name}_keys.zip", type: "application/zip"
+
+    when ["encrypt"] then
+      send_data @authority.encrypt_key_pem,
+                filename: "#{@authority.name}_encrypt_key.pem",
+                type: "application/x-pem-file"
+
+    when ["sign"] then
+      send_data @authority.sign_key_pem,
+                filename: "#{@authority.name}_sign_key.pem",
+                type: "application/x-pem-file"
+
+    else
       render :start_pkey
     end
   end

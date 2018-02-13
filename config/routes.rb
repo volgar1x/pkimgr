@@ -4,10 +4,10 @@ Rails.application.routes.draw do
   resources :cert_profile_constraints
   resources :cert_profiles
   resources :authorities do
-    get "keys" => :edit_keys, on: :member
-    patch "keys" => :update_keys, on: :member
-    get "genpkey" => :edit_genpkey, on: :member
-    patch "genpkey" => :update_genpkey, on: :member
+    get "import" => :start_import, on: :member
+    post "import" => :import, on: :member
+    get "genpkey" => :start_genpkey, on: :member
+    post "genpkey" => :genpkey, on: :member
     get "pkey" => :start_pkey, on: :member
     post "pkey" => :pkey, on: :member
   end

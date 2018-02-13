@@ -1,0 +1,52 @@
+= form_tag nil, method: "post" do
+  .form-label-group
+    = password_field_tag "authority_genpkey[password]", nil, class: ["form-control", @errors && @errors[:password] && "is-invalid"], placeholder: "Password", required: true, autofocus: true
+    = label_tag "authority_genpkey[password]", "Password"
+    - if @errors && @errors[:password]
+      .invalid-feedback= @errors[:password]
+
+  %fieldset
+    .form-group.row
+      .col-md-10.offset-md-2
+        = check_box_tag "authority_genpkey[usage][]", "encrypt", !@authority.encrypt_key_pem, id: "authority_genpkey_usage_encrypt"
+        = label_tag "authority_genpkey_usage_encrypt", "Generate Encryption Row"
+
+    .form-group.row
+      = label_tag "authority_genpkey[encrypt][algorithm]", "Algorithm", class: "col-md-2"
+      = select_tag "authority_genpkey[encrypt][algorithm]", options_for_select(["RSA", "DSA", "ECDSA"]), class: "form-control col-md-10"
+
+    .form-group.row
+      = label_tag "authority_genpkey[encrypt][keysize]", "Key Size", class: "col-md-2"
+      = text_field_tag "authority_genpkey[encrypt][keysize]", "3072", class: "form-control col-md-10"
+
+    .form-group.row
+      = label_tag "authority_genpkey[encrypt][curve]", "Curve (ECDSA only)", class: "col-md-2"
+      = select_tag "authority_genpkey[encrypt][curve]", options_for_select(OpenSSL::PKey::EC.builtin_curves.map{|x| x[0]}), class: "form-control col-md-10"
+
+  %fieldset
+    .form-group.row
+      .col-md-10.offset-md-2
+        = check_box_tag "authority_genpkey[usage][]", "sign", !@authority.sign_key_pem, id: "authority_genpkey_usage_encrypt"
+        = label_tag "authority_genpkey_usage_encrypt", "Generate Signature Row"
+
+    .form-group.row
+      = label_tag "authority_genpkey[sign][algorithm]", "Algorithm", class: "col-md-2"
+      = select_tag "authority_genpkey[sign][algorithm]", options_for_select(["RSA", "DSA", "ECDSA"]), class: "form-control col-md-10"
+
+    .form-group.row
+      = label_tag "authority_genpkey[sign][keysize]", "Key Size", class: "col-md-2"
+      = text_field_tag "authority_genpkey[sign][keysize]", "3072", class: "form-control col-md-10"
+
+    .form-group.row
+      = label_tag "authority_genpkey[sign][curve]", "Curve (ECDSA only)", class: "col-md-2"
+      = select_tag "authority_genpkey[sign][curve]", options_for_select(OpenSSL::PKey::EC.builtin_curves.map{|x| x[0]}), class: "form-control col-md-10"
+
+  .form-group.row
+    .col-md
+      %button.btn.btn-primary{:type => "submit"}
+        %i.fa.fa-sync-alt
+        Generate
+    .col-md.text-right-md
+      = link_to @authority, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back

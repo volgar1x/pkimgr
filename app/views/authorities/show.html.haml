@@ -6,7 +6,7 @@
   .alert.alert-warning
     %p This authority does not have any encryption key. Please generate or import one.
 
-    = link_to "Import", keys_authority_path(@authority), class: "btn"
+    = link_to "Import", import_authority_path(@authority), class: "btn"
     = link_to "Generate", genpkey_authority_path(@authority), class: "btn"
 
 - if @authority.sign_key_pem
@@ -15,5 +15,5 @@
   .alert.alert-warning
     %p This authority does not have any signature key. Please generate or import one.
 
-    = link_to "Import", keys_authority_path(@authority), class: "btn"
+    = link_to "Import", import_authority_path(@authority), class: "btn"
     = link_to "Generate", genpkey_authority_path(@authority), class: "btn"

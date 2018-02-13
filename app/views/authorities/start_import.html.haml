@@ -1,0 +1,18 @@
+= form_for @authority, as: "authority_import", url: import_authority_path(@authority), method: "post" do |f|
+  .form-label-group
+    = f.password_field :password, class: ["form-control", @errors && @errors[:password] && "is-invalid"], placeholder: "Password", required: true, autofocus: true
+    = f.label :password, "Password"
+    - if @errors && @errors[:password]
+      .invalid-feedback= @errors[:password]
+  .form-group.row
+    = f.label :encrypt_key_pem, "Encryption Key", class: "col-md-2"
+    = f.file_field :encrypt_key_pem, class: ["form-control", "col-md-10", @errors && @errors[:encrypt_key_pem] && "is-invalid"]
+    - if @errors && @errors[:encrypt_key_pem]
+      .invalid-feedback= @errors[:encrypt_key_pem]
+  .form-group.row
+    = f.label :sign_key_pem, "Signature Key", class: "col-md-2"
+    = f.file_field :sign_key_pem, class: ["form-control", "col-md-10", @errors && @errors[:sign_key_pem] && "is-invalid"]
+    - if @errors && @errors[:sign_key_pem]
+      .invalid-feedback= @errors[:sign_key_pem]
+  .form-group
+    = f.submit class: "btn btn-primary"

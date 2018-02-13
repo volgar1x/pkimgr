@@ -1,9 +1,0 @@
-= form_for @authority, url: keys_authority_path(@authority) do |f|
-  .form-group.row
-    = f.label :encrypt_key_pem, "Encryption Key", class: "col-md-2"
-    = f.file_field :encrypt_key_pem, class: "form-control col-md-10"
-  .form-group.row
-    = f.label :sign_key_pem, "Signature Key", class: "col-md-2"
-    = f.file_field :sign_key_pem, class: "form-control col-md-10"
-  .form-group
-    = f.submit class: "btn btn-primary"

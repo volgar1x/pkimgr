@@ -5,19 +5,19 @@ class Authority < ApplicationRecord
   has_many :certificates, class_name: "Certificate", as: :subject
   has_many :issued, class_name: "Certificate", inverse_of: :issuer
 
-  def encrypt_key
-    OpenSSL::PKey.read(self.encrypt_key_pem)
+  def get_encrypt_key(password)
+    OpenSSL::PKey.read(self.encrypt_key_pem, password)
   end
 
-  def encrypt_key=(e)
-    self.encrypt_key_pem = e.to_pem
+  def set_encrypt_key(e, password)
+    self.encrypt_key_pem = e.to_pem(Rails.application.config.cipher, password)
   end
 
-  def sign_key
-    OpenSSL::PKey.read(self.sign_key_pem)
+  def get_sign_key(password)
+    OpenSSL::PKey.read(self.sign_key_pem, password)
   end
 
-  def sign_key=(e)
-    self.sign_key_pem = e.to_pem
+  def set_sign_key(e, password)
+    self.sign_key_pem = e.to_pem(Rails.application.config.cipher, password)
   end
 end
