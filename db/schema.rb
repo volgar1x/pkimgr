@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20180206164225) do
   create_table "authorities", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
-    t.string "website", null: false
+    t.string "website"
     t.string "password_digest", null: false
     t.text "sign_key_pem"
     t.text "encrypt_key_pem"
@@ -26,7 +26,6 @@ ActiveRecord::Schema.define(version: 20180206164225) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_authorities_on_email", unique: true
     t.index ["name"], name: "index_authorities_on_name", unique: true
-    t.index ["website"], name: "index_authorities_on_website", unique: true
   end
 
   create_table "authorities_users", id: false, force: :cascade do |t|

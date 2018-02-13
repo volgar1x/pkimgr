@@ -3,7 +3,7 @@ class CreateAuthorities < ActiveRecord::Migration[5.1]
     create_table :authorities do |t|
       t.string :name, null: false
       t.string :email, null: false
-      t.string :website, null: false
+      t.string :website
       t.string :password_digest, null: false
       t.text :sign_key_pem
       t.text :encrypt_key_pem
@@ -12,6 +12,5 @@ class CreateAuthorities < ActiveRecord::Migration[5.1]
     end
     add_index :authorities, :name, unique: true
     add_index :authorities, :email, unique: true
-    add_index :authorities, :website, unique: true
   end
 end

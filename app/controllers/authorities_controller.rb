@@ -24,15 +24,18 @@ class AuthoritiesController < SecureController
   # POST /authorities
   # POST /authorities.json
   def create
-    @authority = Authority.new(authority_params)
+    current_user.transaction do
+      @authority = Authority.new(authority_params)
 
-    respond_to do |format|
-      if @authority.save
-        format.html { redirect_to @authority, notice: 'Authority was successfully created.' }
-        format.json { render :show, status: :created, location: @authority }
-      else
-        format.html { render :new }
-        format.json { render json: @authority.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @authority.save
+          current_user.authorities << @authority
+          format.html { redirect_to @authority, notice: 'Authority was successfully created.' }
+          format.json { render :show, status: :created, location: @authority }
+        else
+          format.html { render :new }
+          format.json { render json: @authority.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
