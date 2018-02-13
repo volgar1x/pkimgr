@@ -1,24 +1,24 @@
-%p#notice= notice
-%h1 Authorities
-%table
-  %thead
-    %tr
-      %th Name
-      %th Email
-      %th Website
-      %th Sign key pem
-      %th Encrypt key pem
-      %th{:colspan => "3"}
-  %tbody
-    - @authorities.each do |authority|
-      %tr
-        %td= authority.name
-        %td= authority.email
-        %td= authority.website
-        %td= authority.sign_key_pem
-        %td= authority.encrypt_key_pem
-        %td= link_to 'Show', authority
-        %td= link_to 'Edit', edit_authority_path(authority)
-        %td= link_to 'Destroy', authority, method: :delete, data: { confirm: 'Are you sure?' }
-%br/
-= link_to 'New Authority', new_authority_path
+.cards.cards-space-between
+  .cards
+    .form-group.mb-0
+      %input#select-all-authorities{:type => "checkbox"}
+      %label{:for => "select-all-authorities"} All
+
+    .btn-group
+      %button.btn
+        %i.fa.fa-pencil-alt
+        Edit
+      %button.btn
+        %i.fa.fa-trash
+        Delete
+
+  .btn-group
+    %button.btn
+      %i.fa.fa-plus
+      Create
+
+.cards
+  - @authorities.each do |authority|
+    .authority
+      %h1= authority.name
+      = link_to "Website", authority.website, class: ""
