@@ -1,5 +1,5 @@
 class AuthoritiesController < SecureController
-  before_action :set_authority, only: [:show, :edit, :update, :destroy]
+  before_action :set_authority, only: [:show, :edit, :update, :destroy, :edit_keys, :update_keys]
 
   # GET /authorities
   # GET /authorities.json
@@ -64,6 +64,28 @@ class AuthoritiesController < SecureController
     end
   end
 
+  # GET /authorities/1/keys
+  def edit_keys
+  end
+
+  # POST /authorities/1/keys
+  # POST /authorities/1/keys.json
+  def update_keys
+    encrypt_key_file, sign_key_file = params.require(:authority).values_at(:encrypt_key_pem, :sign_key_pem)
+    if encrypt_key_file
+      @authority.encrypt_key_pem = encrypt_key_file.read
+    end
+    if sign_key_file
+      @authority.sign_key_pem = sign_key_file.read
+    end
+    @authority.save!
+
+    respond_to do |format|
+      format.html { redirect_to @authority, notice: "New private keys have successfully been imported." }
+      format.json { render :show, status: :ok, location: @authority }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_authority
@@ -72,6 +94,6 @@ class AuthoritiesController < SecureController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def authority_params
-      params.require(:authority).permit(:name, :email, :website, :password, :password_confirmation, :sign_key_pem, :encrypt_key_pem)
+      params.require(:authority).permit(:name, :email, :website, :password, :password_confirmation)
     end
 end

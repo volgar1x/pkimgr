@@ -3,7 +3,10 @@ Rails.application.routes.draw do
   resources :cert_signing_requests
   resources :cert_profile_constraints
   resources :cert_profiles
-  resources :authorities
+  resources :authorities do
+    get "keys" => :edit_keys, on: :member
+    patch "keys" => :update_keys, on: :member
+  end
   resources :users
 
   resource :session, only: [:new, :create, :destroy], controller: "session"

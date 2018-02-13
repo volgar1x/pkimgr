@@ -21,4 +21,5 @@
   - @authorities.each do |authority|
     .authority
       %h1= authority.name
+      = link_to "Open", authority, class: ""
       = link_to "Website", authority.website, class: ""
