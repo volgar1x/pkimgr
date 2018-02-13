@@ -130,22 +130,26 @@ class AuthoritiesController < SecureController
   def pkey
     pkey_params = params.require("authority_pkey")
     if @authority.authenticate(pkey_params["password"])
-      case pkey_params["usage"].to_set
-      when Set["encrypt", "sign"] then
+      case pkey_params["usage"]
+      when ["encrypt", "sign"] then
         buffer = Zip::OutputStream.write_buffer do |out|
           out.put_next_entry("#{@authority.name}_keys/encrypt_key.pem")
-          out.write(@authority.encrypt_key_pem)
+          out.write(@authority.encrypt_key.to_pem("AES-256-CTR", pkey_params["password"]))
 
           out.put_next_entry("#{@authority.name}_keys/sign_key.pem")
-          out.write(@authority.sign_key_pem)
+          out.write(@authority.sign_key.to_pem("AES-256-CTR", pkey_params["password"]))
         end
         send_data buffer.string, filename: "#{@authority.name}_keys.zip", type: "application/zip"
 
-      when Set["encrypt"] then
-        send_data @authority.encrypt_key_pem, filename: "#{@authority.name}_encrypt_key.pem", type: "application/x-pem-file"
+      when ["encrypt"] then
+        send_data @authority.encrypt_key.to_pem("AES-256-CTR", pkey_params["password"]),
+                  filename: "#{@authority.name}_encrypt_key.pem",
+                  type: "application/x-pem-file"
 
-      when Set["sign"] then
-        send_data @authority.sign_key_pem, filename: "#{@authority.name}_sign_key.pem", type: "application/x-pem-file"
+      when ["sign"] then
+        send_data @authority.sign_key.to_pem("AES-256-CTR", pkey_params["password"]),
+                  filename: "#{@authority.name}_sign_key.pem",
+                  type: "application/x-pem-file"
 
       else
         render :start_pkey
