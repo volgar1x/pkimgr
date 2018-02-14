@@ -3,6 +3,16 @@ class ProfilesController < SecureController
   end
 
   def update
+    profile_params = params.require(:profile).permit(
+      :email, :phone, :firstname, :lastname,
+      :country, :state, :city, :zip,
+    )
+
+    unless current_user.authenticate(params[:profile][:password])
+      current_user.errors.add(:password, "is invalid")
+      return render :edit
+    end
+
     respond_to do |format|
       if current_user.update(profile_params)
         format.html { redirect_to edit_profile_path, notice: 'Your profile was successfully updated.' }
@@ -18,10 +28,5 @@ class ProfilesController < SecureController
     current_user.destroy
     reset_session
     redirect_to new_session_path, notice: "Your profile has been deleted."
-  end
-
-private
-  def profile_params
-    params.require(:profile).permit(:email, :firstname, :lastname, :street, :street2, :city, :zip, :country, :phone)
   end
 end
