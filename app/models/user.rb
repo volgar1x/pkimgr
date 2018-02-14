@@ -4,6 +4,10 @@ class User < ApplicationRecord
   has_many :requests, class_name: "CertSigningRequest", as: :subject
   has_many :certificates, class_name: "Certificate", as: :subject
 
+  def name
+    "#{self.firstname} #{self.lastname}"
+  end
+
   def get_encrypt_key(password)
     OpenSSL::PKey.read(self.encrypt_key_pem, password)
   end

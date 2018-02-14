@@ -1,0 +1,24 @@
+= form_for current_user, as: "profile_import", url: nil, method: "post" do |f|
+  .form-group.row
+    = f.label :encrypt_key_pem, "Encryption Key", class: "col-md-2"
+    = f.file_field :encrypt_key_pem, class: ["form-control", "col-md-10", current_user.errors[:encrypt_key_pem].any? && "is-invalid"]
+    - current_user.errors.messages[:encrypt_key_pem].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+  .form-group.row
+    = f.label :sign_key_pem, "Signature Key", class: "col-md-2"
+    = f.file_field :sign_key_pem, class: ["form-control", "col-md-10", current_user.errors[:sign_key_pem].any? && "is-invalid"]
+    - current_user.errors.messages[:sign_key_pem].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+  .form-label-group
+    = f.password_field :password, class: ["form-control", current_user.errors[:password].any? && "is-invalid"], placeholder: "Confirm Password To Import", required: true
+    = f.label :password, "Confirm Password To Import"
+    - current_user.errors.messages[:password].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+  .form-group
+    = f.submit class: "btn btn-primary"

@@ -1,51 +1,78 @@
-%h1 Configure
+.jumbotron
+  %h1.display-3 Configure Your Profile
 
-= form_for current_user, as: :profile, url: profile_path do |f|
-  .form-label-group
-    = f.email_field :email, class: "form-control", placeholder: "E-mail Address", required: true
-    = f.label :email, "E-mail Address"
+  %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+  = link_to start_genpkey_profile_path, class: "btn" do
+    %i.fa.fa-sync-alt
+    Generate Private Keys
+
+  = link_to start_import_profile_path, class: "btn" do
+    %i.fa.fa-cloud-upload-alt
+    Import Private Keys
+
+  = link_to start_export_profile_path, class: "btn" do
+    %i.fa.fa-cloud-download-alt
+    Export Private Keys
+
+= form_for current_user, as: :profile, url: profile_path, method: "post" do |f|
   .row
-    .form-label-group.col-md
-      = f.text_field :firstname, class: "form-control", placeholder: "First Name", required: true
+    .col-lg.form-label-group
+      = f.text_field :firstname, class: "form-control", placeholder: "First Name", (current_user.try(:firstname).nil? ? "required" : "readonly") => true
       = f.label :firstname, "First Name"
 
-    .form-label-group.col-md
-      = f.text_field :lastname, class: "form-control", placeholder: "Last Name", required: true
+    .col-lg.form-label-group
+      = f.text_field :lastname, class: "form-control", placeholder: "Last Name", current_user.try(:lastname).nil? ? "required" : "readonly" => true
       = f.label :lastname, "Last Name"
 
-  .row
-    .form-label-group.col-md
-      = f.text_field :street, class: "form-control", placeholder: "Street", required: true
-      = f.label :street, "Street"
+    .col-lg.form-label-group
+      = f.email_field :email, class: "form-control", placeholder: "E-mail Address", current_user.try(:email).nil? ? "required" : "readonly" => true
+      = f.label :email, "E-mail Address"
 
-    .form-label-group.col-md
-      = f.text_field :street2, class: "form-control", placeholder: "Street (additional)"
-      = f.label :street2, "Street (additional)"
+    .col-lg.form-label-group
+      = f.text_field :phone, class: "form-control", placeholder: "Phone", current_user.try(:phone).nil? ? "required" : "readonly" => true
+      = f.label :phone, "Phone"
 
-  .row
-    .form-label-group.col-md
-      = f.text_field :city, class: "form-control", placeholder: "City", required: true
-      = f.label :city, "City"
-
-    .form-label-group.col-md
-      = f.text_field :zip, class: "form-control", placeholder: "ZIP", required: true
-      = f.label :zip, "ZIP"
-
-    .form-label-group.col-md
-      = f.text_field :country, class: "form-control", placeholder: "Country", required: true
-      = f.label :country, "Country"
+  %fieldset
+    %legend Informations
+    .row
+      .form-label-group.col-md-3
+        = f.text_field :country, class: "form-control", placeholder: "Country"
+        = f.label :country, "Country"
+      .form-label-group.col-md-3
+        = f.text_field :state, class: "form-control", placeholder: "State"
+        = f.label :state, "State"
+      .form-label-group.col-md-4
+        = f.text_field :city, class: "form-control", placeholder: "City"
+        = f.label :city, "City"
+      .form-label-group.col-md-2
+        = f.text_field :zip, class: "form-control", placeholder: "ZIP"
+        = f.label :zip, "ZIP"
+    .form-label-group
+      -# = f.text_field :main_authority, class: "form-control", placeholder: "Main Authority"
+      -# = f.label :main_authority, "Main Authority"
+      %input.form-control{:type => "text", :placeholder => "Main Authority", :id => "profile_main_authority"}
+      %label{:for => "profile_main_authority"} Main Authority
 
   .form-label-group
-    = f.text_field :phone, class: "form-control", placeholder: "Phone", required: true
-    = f.label :phone, "Phone"
+    = f.password_field :password, class: ["form-control", current_user.errors[:password].any? && "is-invalid"], placeholder: "Password", required: true
+    = f.label :password, "Confirm Password To Update"
+    - current_user.errors.messages[:password].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
 
-  .row
+  .actions.row
     .col-md
-      %button.btn.btn-primary.btn-lg{:type => "submit"}
-        %i.fa.fa-edit
+      %button.btn.btn-primary{:type => "submit", :name => "profile[action]", :value => "update"}
+        %i.fa.fa-plus
         Update Your Profile
-    .col.text-right-md
-      = link_to profile_path, class: "btn btn-danger btn-lg", method: :delete, data: {confirm: "Are you sure you want to delete your account?"} do
+
+      %button.btn.btn-secondary{:type => "submit", :name => "profile[action]", :value => "destroy"}
         %i.fa.fa-trash
         Delete Your Profile
+
+    .col-md.text-right-md
+      = link_to request.referer, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back

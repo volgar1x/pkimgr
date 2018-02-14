@@ -1,0 +1,19 @@
+= form_tag nil, method: "post" do
+  .form-group
+    = check_box_tag "profile_export[usage][]", "encrypt", nil, id: "profile_export_usage_encrypt"
+    = label_tag "profile_export_usage_encrypt", "Encryption"
+    = check_box_tag "profile_export[usage][]", "sign", nil, id: "profile_export_usage_sign"
+    = label_tag "profile_export_usage_sign", "Signature"
+
+  .form-label-group
+    = password_field_tag "profile_export[password]", nil, class: ["form-control", current_user.errors[:password].any? && "is-invalid"], placeholder: "Password"
+    = label_tag "profile_export[password]", "Password"
+    - current_user.errors.messages[:password].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+
+  .form-group
+    %button.btn.btn-primary{:type => ":submit"}
+      %i.fa.fa-share
+      Export

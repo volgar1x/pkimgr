@@ -18,7 +18,18 @@ Rails.application.routes.draw do
   resources :users
 
   resource :session, only: [:new, :create, :destroy], controller: "session"
-  resource :profile, only: [:edit, :update, :destroy]
+  # resource :profile, only: [:edit, :update]
+  scope "/profile", controller: "profiles" do
+    get "/" => :edit, as: "edit_profile"
+    post "/" => :update, as: "profile"
+
+    get "/import" => :start_import, as: "start_import_profile"
+    post "/import" => :import, as: nil
+    get "/export" => :start_export, as: "start_export_profile"
+    post "/export" => :export, as: nil
+    get "/genpkey" => :start_genpkey, as: "start_genpkey_profile"
+    post "/genpkey" => :genpkey, as: nil
+  end
 
   root to: 'misc#dashboard'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
