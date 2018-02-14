@@ -20,6 +20,11 @@ ActiveRecord::Schema.define(version: 20180206164225) do
     t.string "email", null: false
     t.string "website"
     t.string "password_digest", null: false
+    t.string "city"
+    t.string "zip"
+    t.string "country"
+    t.string "state"
+    t.string "organization"
     t.text "sign_key_pem"
     t.text "encrypt_key_pem"
     t.datetime "created_at", null: false
@@ -85,7 +90,10 @@ ActiveRecord::Schema.define(version: 20180206164225) do
     t.string "city"
     t.string "zip"
     t.string "country"
+    t.string "state"
     t.string "phone"
+    t.text "sign_key_pem"
+    t.text "encrypt_key_pem"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

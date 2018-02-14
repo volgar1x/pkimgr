@@ -5,6 +5,11 @@ class CreateAuthorities < ActiveRecord::Migration[5.1]
       t.string :email, null: false
       t.string :website
       t.string :password_digest, null: false
+      t.string :city
+      t.string :zip
+      t.string :country
+      t.string :state
+      t.string :organization
       t.text :sign_key_pem
       t.text :encrypt_key_pem
 

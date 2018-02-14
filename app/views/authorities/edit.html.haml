@@ -1,5 +1,55 @@
-%h1 Editing Authority
-= render 'form', authority: @authority
-= link_to 'Show', @authority
-|
-= link_to 'Back', authorities_path
+%h1= @authority.name
+
+= form_for @authority do |f|
+  .row
+    .col-lg.form-label-group
+      = f.text_field :name, class: "form-control", placeholder: "Name", readonly: true
+      = f.label :name, "Name"
+
+    .col-lg.form-label-group
+      = f.email_field :email, class: "form-control", placeholder: "E-mail Address", readonly: true
+      = f.label :email, "E-mail Address"
+
+    .col-lg.form-label-group
+      = f.text_field :website, class: "form-control", placeholder: "Website URL", readonly: true
+      = f.label :website, "Website URL"
+
+  %fieldset
+    %legend Informations
+
+    .row
+      .form-label-group.col-md-3
+        = f.text_field :country, class: "form-control", placeholder: "Country"
+        = f.label :country, "Country"
+      .form-label-group.col-md-3
+        = f.text_field :state, class: "form-control", placeholder: "State"
+        = f.label :state, "State"
+      .form-label-group.col-md-4
+        = f.text_field :city, class: "form-control", placeholder: "City"
+        = f.label :city, "City"
+      .form-label-group.col-md-2
+        = f.text_field :zip, class: "form-control", placeholder: "ZIP"
+        = f.label :zip, "ZIP"
+    .form-label-group
+      = f.text_field :organization, class: "form-control", placeholder: "Organization"
+      = f.label :organization, "Organization"
+
+  .form-label-group
+    = f.password_field :password, class: ["form-control", @authority.errors[:password].any? && "is-invalid"], placeholder: "Password", required: true
+    = f.label :password, "Confirm Password To Update"
+    - @authority.errors.messages[:password].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+
+  .actions.row
+    .col-md
+      %button.btn.btn-primary{:type => "submit"}
+        %i.fa.fa-plus
+        Update
+        = @authority.name
+
+    .col-md.text-right-md
+      = link_to @authority, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back

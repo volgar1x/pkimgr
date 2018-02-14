@@ -10,7 +10,10 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :city
       t.string :zip
       t.string :country
+      t.string :state
       t.string :phone
+      t.text :sign_key_pem
+      t.text :encrypt_key_pem
 
       t.timestamps
     end

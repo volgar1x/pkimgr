@@ -25,6 +25,11 @@ class AuthoritiesController < SecureController
   # POST /authorities.json
   def create
     current_user.transaction do
+      authority_params = params.require(:authority).permit(
+        :name, :email, :website,
+        :country, :state, :city, :zip, :organization,
+        :password, :password_confirmation,
+      )
       @authority = Authority.new(authority_params)
 
       respond_to do |format|
@@ -43,7 +48,13 @@ class AuthoritiesController < SecureController
   # PATCH/PUT /authorities/1
   # PATCH/PUT /authorities/1.json
   def update
+    unless @authority.authenticate(params[:authority][:password])
+      @authority.errors.add(:password, "is invalid")
+      return render :edit
+    end
+
     respond_to do |format|
+      authority_params = params.require(:authority).permit(:country, :state, :city, :zip, :organization)
       if @authority.update(authority_params)
         format.html { redirect_to @authority, notice: 'Authority was successfully updated.' }
         format.json { render :show, status: :ok, location: @authority }
@@ -190,10 +201,5 @@ class AuthoritiesController < SecureController
     # Use callbacks to share common setup or constraints between actions.
     def set_authority
       @authority = Authority.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def authority_params
-      params.require(:authority).permit(:name, :email, :website, :password, :password_confirmation)
     end
 end

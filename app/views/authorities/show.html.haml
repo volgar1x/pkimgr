@@ -1,4 +1,10 @@
-%h1.display-3= @authority.name
+.row
+  .col-md
+    %h1.display-3= @authority.name
+  .col-md.text-right-md
+    = link_to edit_authority_path(@authority), class: "btn btn-light" do
+      %i.fa.fa-pencil-alt
+      Edit
 
 - unless @authority.encrypt_key_pem
   .alert.alert-warning This authority does not have any encryption key. Please generate or import one.
