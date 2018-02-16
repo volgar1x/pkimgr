@@ -18,4 +18,11 @@
   = link_to "Export Private Key", export_authority_path(@authority), class: "btn btn-light"
   = link_to "Request Certificate from us", new_authority_cert_signing_request_path(@authority), class: "btn btn-light"
 
+%h3 Certificates
 = render "certificates/table", certificates: @authority.certificates
+
+%h3 Requested Certificates
+= render "cert_signing_requests/table_subject", csrs: @authority.subject_requests
+
+%h3 Received Requests
+= render "cert_signing_requests/table_issuer", csrs: @authority.issuer_requests

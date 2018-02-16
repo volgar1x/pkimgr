@@ -1,4 +1,5 @@
 class CertSigningRequestsController < SecureController
+  before_action :set_issuer
   before_action :set_cert_signing_request, only: [:show, :edit, :update, :destroy]
 
   # GET /cert_signing_requests
@@ -26,31 +27,33 @@ class CertSigningRequestsController < SecureController
   # POST /cert_signing_requests
   # POST /cert_signing_requests.json
   def create
-    csr_params = params.require(:cert_signing_request).permit(
-      :name,
-      :subject_pubid, :subject_password,
-      :profile_id,
-    )
-    @csr = CertSigningRequest.new(csr_params)
+    CertSigningRequest.transaction do
+      csr_params = params.require(:cert_signing_request).permit(
+        :name,
+        :subject_pubid, :subject_password,
+        :profile_id,
+      )
+      @csr = CertSigningRequest.new(csr_params)
 
-    unless @csr.authenticate
-      @csr.errors.add(:subject_password, "is invalid")
-      self.new
-      return render :new
-    end
+      unless @csr.authenticate
+        @csr.errors.add(:subject_password, "is invalid")
+        self.new
+        return render :new
+      end
 
-    unless @csr.submit_req
-      @csr.errors.add(:subject_pubid, "does not have a signature key yet")
-      console
-      self.new
-      return render :new
-    end
+      unless @csr.submit_req
+        @csr.errors.add(:subject_pubid, "does not have a signature key yet")
+        self.new
+        return render :new
+      end
 
-    if @csr.save
-      redirect_to @csr, notice: "Your request is being processed and you will be notified of any updates."
-    else
-      self.new
-      render :new
+      if @csr.save
+        @csr.issuers << @issuer if @issuer
+        redirect_to @csr, notice: "Your request is being processed and you will be notified of any updates."
+      else
+        self.new
+        render :new
+      end
     end
   end
 
@@ -82,5 +85,11 @@ class CertSigningRequestsController < SecureController
     # Use callbacks to share common setup or constraints between actions.
     def set_cert_signing_request
       @cert_signing_request = CertSigningRequest.find(params[:id])
+    end
+
+    def set_issuer
+      if (issuer_id = params[:authority_id])
+        @issuer = Authority.find(issuer_id)
+      end
     end
 end

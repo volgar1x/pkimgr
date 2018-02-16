@@ -1,0 +1,22 @@
+%table.table.table-hover
+  %thead
+    %tr
+      %th Subject
+      %th Name
+      %th Profile
+      %th Requested
+      %th
+  %tbody
+    - csrs.each do |csr|
+      %tr
+        %td= render csr.subject
+        %td= csr.name
+        %td= csr.profile.name
+        %td.timetz= csr.created_at.rfc2822
+        %td
+          = link_to "#", class: "btn" do
+            %i.fa.fa-check
+            Accept
+          = link_to "#", class: "btn" do
+            %i.fa.fa-times
+            Reject

@@ -1,4 +1,6 @@
 = form_for @csr do |f|
+  = hidden_field_tag "authority_id", params[:authority_id]
+
   .form-label-group
     = f.text_field :name, class: ["form-control", @csr.errors[:name].any? && "is-invalid"], placeholder: "Common Name"
     = f.label :name, "Common Name"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206164225) do
+ActiveRecord::Schema.define(version: 20180216173101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,11 @@ ActiveRecord::Schema.define(version: 20180206164225) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_authorities_on_email", unique: true
     t.index ["name"], name: "index_authorities_on_name", unique: true
+  end
+
+  create_table "authorities_csr", force: :cascade do |t|
+    t.integer "authority_id"
+    t.integer "csr_id"
   end
 
   create_table "authorities_users", id: false, force: :cascade do |t|
