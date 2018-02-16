@@ -58,8 +58,9 @@ ActiveRecord::Schema.define(version: 20180206164225) do
   create_table "cert_signing_requests", force: :cascade do |t|
     t.string "subject_type", null: false
     t.bigint "subject_id", null: false
-    t.bigint "profile_id"
-    t.text "pem"
+    t.bigint "profile_id", null: false
+    t.string "name", null: false
+    t.text "pem", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["profile_id"], name: "index_cert_signing_requests_on_profile_id"

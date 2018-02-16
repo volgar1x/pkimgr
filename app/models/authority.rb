@@ -5,8 +5,21 @@ class Authority < ApplicationRecord
   has_many :certificates, class_name: "Certificate", as: :subject
   has_many :issued, class_name: "Certificate", inverse_of: :issuer
 
+  def x509(additionals = [])
+    OpenSSL::X509::Name.new [
+      ["C", self.country],
+      ["ST", self.state],
+      ["L", self.city],
+      ["O", self.organization],
+      ["OU", self.name],
+      ["emailAddress", self.email],
+      # CN needs to be set by caller
+      *additionals,
+    ]
+  end
+
   def get_encrypt_key(password)
-    OpenSSL::PKey.read(self.encrypt_key_pem, password)
+    self.encrypt_key_pem && OpenSSL::PKey.read(self.encrypt_key_pem, password)
   end
 
   def set_encrypt_key(e, password)
@@ -14,7 +27,7 @@ class Authority < ApplicationRecord
   end
 
   def get_sign_key(password)
-    OpenSSL::PKey.read(self.sign_key_pem, password)
+    self.sign_key_pem && OpenSSL::PKey.read(self.sign_key_pem, password)
   end
 
   def set_sign_key(e, password)

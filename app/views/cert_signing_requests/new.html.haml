@@ -1,3 +1,45 @@
-%h1 New Cert Signing Request
-= render 'form', cert_signing_request: @cert_signing_request
-= link_to 'Back', cert_signing_requests_path
+= form_for @csr do |f|
+  .form-label-group
+    = f.text_field :name, class: ["form-control", @csr.errors[:name].any? && "is-invalid"], placeholder: "Common Name"
+    = f.label :name, "Common Name"
+    - @csr.errors.messages[:name].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+
+  .form-group.row
+    = f.label :subject_pubid, "Subject", class: "col-md-2"
+    .col-md-10
+      = f.collection_select :subject_pubid, @subjects, :pubid, :name, {}, class: ["form-control", @csr.errors[:subject_pubid].any? && "is-invalid"]
+      - @csr.errors.messages[:subject_pubid].each do |error|
+        .invalid-feedback
+          %i.fa.fa-exclamation
+          = error
+
+  .form-label-group
+    = f.password_field :subject_password, class: ["form-control", @csr.errors[:subject_password].any? && "is-invalid"], placeholder: "Subject Password"
+    = f.label :subject_password, "Subject Password"
+    - @csr.errors.messages[:subject_password].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+
+  .form-group.row
+    = f.label :profile_id, "Profile", class: "col-md-2"
+    .col-md-10
+      = f.collection_select :profile_id, @profiles, :id, :name, {}, class: ["form-control", @csr.errors[:profile_id].any? && "is-invalid"]
+      - @csr.errors.messages[:profile_id].each do |error|
+        .invalid-feedback
+          %i.fa.fa-exclamation
+          = error
+
+  .actions.row
+    .col-md
+      %button.btn.btn-primary{:type => "submit"}
+        %i.fa.fa-certificate
+        Request Certficate
+
+    .col-md.text-right-md
+      = link_to request.referer, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back
