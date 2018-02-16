@@ -14,6 +14,9 @@
         OpenSSL
         %span.badge.badge-secondary.badge-pill= @versions[:openssl]
       %li.list-group-item.d-flex.justify-content-between.align-items-center
+        Cipher
+        %span.badge.badge-secondary.badge-pill= Rails.application.config.cipher.name
+      %li.list-group-item.d-flex.justify-content-between.align-items-center
         Ruby
         %span.badge.badge-secondary.badge-pill= @versions[:ruby]
       %li.list-group-item.d-flex.justify-content-between.align-items-center
