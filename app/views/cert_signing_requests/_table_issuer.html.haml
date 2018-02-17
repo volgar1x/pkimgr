@@ -14,9 +14,9 @@
         %td= csr.profile.name
         %td.timetz= csr.created_at.rfc2822
         %td
-          = link_to "#", class: "btn" do
+          = link_to accept_authority_cert_signing_request_path(issuer, csr), class: "btn" do
             %i.fa.fa-check
             Accept
-          = link_to "#", class: "btn" do
+          = link_to reject_authority_cert_signing_request_path(issuer, csr), class: "btn" do
             %i.fa.fa-times
             Reject

@@ -13,7 +13,14 @@ Rails.application.routes.draw do
     post "export" => :export, on: :member
 
     resources :certificates, shallow: true
-    resources :cert_signing_requests, shallow: true, path: "csr"
+    resources :cert_signing_requests, path: "csr", only: [:new] do
+      get "accept" => :start_accept, on: :member
+      post "accept" => :accept, on: :member
+      get "reject" => :start_reject, on: :member
+      post "reject" => :reject, on: :member
+      get "cancel" => :start_cancel, on: :member
+      post "cancel" => :cancel, on: :member
+    end
   end
   resources :users
 

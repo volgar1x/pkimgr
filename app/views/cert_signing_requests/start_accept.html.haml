@@ -1,0 +1,28 @@
+= form_for @csr do |f|
+  .form-label-group
+    = f.password_field :issuer_password, class: ["form-control", @csr.errors[:issuer_password].any? && "is-invalid"], placeholder: "Password", required: true
+    = f.label :issuer_password, "Password"
+    - @csr.errors.messages[:issuer_password].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+
+  .form-group.row
+    = f.label :profile_id, "Profile", class: "col-md-2"
+    .col-md-10
+      = f.collection_select :profile_id, @profiles, :id, :name, {}, class: ["form-control", @csr.errors[:profile_id].any? && "is-invalid"]
+      - @csr.errors.messages[:profile_id].each do |error|
+        .invalid-feedback
+          %i.fa.fa-exclamation
+          = error
+
+  .actions.row
+    .col-md
+      %button.btn.btn-primary{:type => "submit"}
+        %i.fa.fa-certificate
+        Sign Certificate
+
+    .col-md.text-right-md
+      = link_to request.referer, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back

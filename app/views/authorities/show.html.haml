@@ -25,4 +25,4 @@
 = render "cert_signing_requests/table_subject", csrs: @authority.subject_requests
 
 %h3 Received Requests
-= render "cert_signing_requests/table_issuer", csrs: @authority.issuer_requests
+= render "cert_signing_requests/table_issuer", csrs: @authority.issuer_requests, issuer: @authority
