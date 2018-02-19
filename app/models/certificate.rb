@@ -3,7 +3,15 @@ class Certificate < ApplicationRecord
   belongs_to :subject, polymorphic: true
   belongs_to :profile, class_name: "CertProfile"
 
+  def x509
+    @_x509 ||= OpenSSL::X509::Certificate.new self.pem
+  end
+
+  def name
+    self.x509.subject.to_a.assoc("CN").try(:at, 1)
+  end
+
   def expires
-    3.days.from_now # TODO Certificate#expires
+    self.x509.not_after
   end
 end

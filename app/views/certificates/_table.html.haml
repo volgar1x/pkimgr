@@ -2,6 +2,7 @@
   %thead
     %tr
       %th.visible-md #
+      %th Name
       %th Issuer
       %th Subject
       %th Expiration
@@ -11,9 +12,12 @@
     - certificates.each do |cert|
       %tr
         %td.visible-md= cert.id
+        %td= cert.name
         %td= render cert.issuer
         %td= render cert.subject
-        %td.timetz= cert.expires.rfc2822
+        %td
+          %span.timetz= cert.expires.rfc2822
+          = "(#{cert.expires.strftime('%b %Y')})"
         %td
           = link_to "Open", cert
           &nbsp;

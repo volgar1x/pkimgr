@@ -9,8 +9,16 @@ class CertSigningRequest < ApplicationRecord
     association_foreign_key: "authority_id"
 
   validates :name, presence: true, length: { minimum: 5 }
-  validates :profile_id, presence: true
   validates :subject_pubid, presence: true
+  validates :profile_id, presence: true
+
+  attr_accessor :issuer_password, :issuer_certificate_id, :validity_duration
+  validates :issuer_password, presence: true, on: :accept
+  validates :issuer_certificate_id, numericality: { only_integer: true }, on: :accept
+  validates :validity_duration,
+    numericality: { only_integer: true, greater_than: 0, less_than: 11 },
+    presence: true,
+    on: :accept
 
   def subject_pubid
     self.subject.try(:pubid)

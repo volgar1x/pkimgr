@@ -1,13 +1,12 @@
-%p#notice= notice
 %p
   %strong Subject:
-  = render @cert_signing_request.subject
+  = render @csr.subject
 %p
   %strong Profile:
-  = @cert_signing_request.profile.name
+  = @csr.profile.name
 %p
   %strong Pem:
-  %code= simple_format(@cert_signing_request.pem)
-= link_to 'Edit', edit_cert_signing_request_path(@cert_signing_request)
+  %code= simple_format(@csr.pem)
+= link_to 'Edit', edit_cert_signing_request_path(@csr)
 |
 = link_to 'Back', cert_signing_requests_path

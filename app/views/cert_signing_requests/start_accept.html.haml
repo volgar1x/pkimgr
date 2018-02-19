@@ -16,6 +16,24 @@
           %i.fa.fa-exclamation
           = error
 
+  .form-group.row
+    = f.label :issuer_certificate_id, "Sign With", class: "col-md-2"
+    .col-md-10
+      = f.collection_select :issuer_certificate_id, @issuer.certificates, :id, :name, {prompt: "Self-signing"}, class: ["form-control", @csr.errors[:issuer_certificate_id].any? && "is-invalid"]
+      - @csr.errors.messages[:issuer_certificate_id].each do |error|
+        .invalid-feedback
+          %i.fa.fa-exclamation
+          = error
+
+  .form-group.row
+    = f.label :validity_duration, "Validity", class: "col-md-2"
+    .col-md-10
+      = f.select :validity_duration, (1..10).map{|i| ["#{pluralize i, 'year'} (until #{i.years.from_now.strftime('%b %Y')})", i]}, {include_blank: false}, class: ["form-control", @csr.errors[:validity_duration].any? && "is-invalid"]
+      - @csr.errors.messages[:validity_duration].each do |error|
+        .invalid-feedback
+          %i.fa.fa-exclamation
+          = error
+
   .actions.row
     .col-md
       %button.btn.btn-primary{:type => "submit"}

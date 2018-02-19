@@ -86,6 +86,47 @@ class CertSigningRequestsController < SecureController
   end
 
   def accept
+    csr_params = params.require(:cert_signing_request).permit(:issuer_password, :profile_id, :validity_duration, :issuer_certificate_id)
+    @csr.assign_attributes(csr_params)
+
+    unless @csr.valid? on: :accept
+      @profiles = CertProfile.all
+      return render :start_accept
+    end
+
+    unless @issuer.authenticate(@csr.issuer_password)
+      @csr.errors.add :issuer_password, "is invalid"
+      @profiles = CertProfile.all
+      return render :start_accept
+    end
+
+    req = OpenSSL::X509::Request.new @csr.pem
+    cert = OpenSSL::X509::Certificate.new
+    cert.serial = 0 # TODO generate certificate serial
+    cert.version = 2
+    cert.not_before = Time.now
+    cert.not_after = cert.not_before + @csr.validity_duration.years
+    cert.public_key = req.public_key
+    cert.subject = req.subject
+    cert.issuer = @issuer.x509
+
+    cert_ext = OpenSSL::X509::ExtensionFactory.new
+    cert_ext.subject_certificate = cert
+    cert_ext.issuer_certificate = @issuer.certificates.find(@csr.issuer_certificate_id)
+    @csr.profile.add_extension cert, cert_ext
+
+    sign_key = @issuer.get_sign_key @csr.issuer_password
+    cert.sign sign_key, Rails.application.config.digest
+    cert_pem = cert.to_pem
+
+    certificate = Certificate.create(
+      issuer: @issuer,
+      subject: @csr.subject,
+      profile: @csr.profile,
+      pem: cert_pem,
+    )
+
+    redirect_to certificate, notice: "A new certificate has successfully been signed."
   end
 
   def start_reject
