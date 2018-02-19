@@ -3,6 +3,7 @@ class CertSigningRequest < ApplicationRecord
 
   belongs_to :subject, polymorphic: true
   belongs_to :profile, class_name: "CertProfile"
+  belongs_to :certificate, required: false
   has_and_belongs_to_many :issuers, class_name: "Authority",
     join_table: "authorities_csr",
     foreign_key: "csr_id",

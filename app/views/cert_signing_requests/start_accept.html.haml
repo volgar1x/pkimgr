@@ -1,4 +1,4 @@
-= form_for @csr do |f|
+= form_for @csr, url: accept_authority_cert_signing_request_path(@issuer, @csr), method: "post" do |f|
   .form-label-group
     = f.password_field :issuer_password, class: ["form-control", @csr.errors[:issuer_password].any? && "is-invalid"], placeholder: "Password", required: true
     = f.label :issuer_password, "Password"

@@ -12,6 +12,7 @@ class CreateAuthorities < ActiveRecord::Migration[5.1]
       t.string :organization
       t.text :sign_key_pem
       t.text :encrypt_key_pem
+      t.bigint :next_serial, null: false, default: 1
 
       t.timestamps
     end

@@ -49,8 +49,9 @@ class CertSigningRequestsController < SecureController
 
       if @csr.save
         @csr.issuers << @issuer if @issuer
-        redirect_to @csr, notice: "Your request is being processed and you will be notified of any updates."
+        redirect_to @issuer, notice: "Your request is being processed and you will be notified of any updates."
       else
+        console
         self.new
         render :new
       end
@@ -100,20 +101,25 @@ class CertSigningRequestsController < SecureController
       return render :start_accept
     end
 
+    issuer_certificate = unless @csr.issuer_certificate_id.empty?
+      certificate = @issuer.certificates.find(@csr.issuer_certificate_id)
+      OpenSSL::X509::Certificate.new certificate.pem
+    end
+
     req = OpenSSL::X509::Request.new @csr.pem
     cert = OpenSSL::X509::Certificate.new
-    cert.serial = 0 # TODO generate certificate serial
+    cert.serial = @issuer.gen_serial
     cert.version = 2
     cert.not_before = Time.now
-    cert.not_after = cert.not_before + @csr.validity_duration.years
+    cert.not_after = cert.not_before + @csr.validity_duration.to_i.years
     cert.public_key = req.public_key
     cert.subject = req.subject
-    cert.issuer = @issuer.x509
+    cert.issuer = issuer_certificate.try(:subject) || cert.subject
 
     cert_ext = OpenSSL::X509::ExtensionFactory.new
     cert_ext.subject_certificate = cert
-    cert_ext.issuer_certificate = @issuer.certificates.find(@csr.issuer_certificate_id)
-    @csr.profile.add_extension cert, cert_ext
+    cert_ext.issuer_certificate = issuer_certificate || cert
+    @csr.profile.add_extensions cert, cert_ext
 
     sign_key = @issuer.get_sign_key @csr.issuer_password
     cert.sign sign_key, Rails.application.config.digest
@@ -125,6 +131,7 @@ class CertSigningRequestsController < SecureController
       profile: @csr.profile,
       pem: cert_pem,
     )
+    @csr.update!(certificate: certificate)
 
     redirect_to certificate, notice: "A new certificate has successfully been signed."
   end

@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20180216173101) do
     t.string "organization"
     t.text "sign_key_pem"
     t.text "encrypt_key_pem"
+    t.bigint "next_serial", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_authorities_on_email", unique: true
@@ -64,10 +65,12 @@ ActiveRecord::Schema.define(version: 20180216173101) do
     t.string "subject_type", null: false
     t.bigint "subject_id", null: false
     t.bigint "profile_id", null: false
+    t.bigint "certificate_id"
     t.string "name", null: false
     t.text "pem", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["certificate_id"], name: "index_cert_signing_requests_on_certificate_id"
     t.index ["profile_id"], name: "index_cert_signing_requests_on_profile_id"
     t.index ["subject_type", "subject_id"], name: "index_cert_signing_requests_on_subject_type_and_subject_id"
   end

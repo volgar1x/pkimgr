@@ -10,7 +10,7 @@
   = @certificate.profile
 %p
   %strong Pem:
-  = @certificate.pem
+  %code= simple_format(@certificate.pem)
 %p
   %strong Revoked at:
   = @certificate.revoked_at
