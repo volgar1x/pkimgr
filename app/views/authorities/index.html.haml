@@ -1,25 +1,27 @@
-.cards.cards-space-between
-  .cards
-    .form-group.mb-0
-      %input#select-all-authorities{:type => "checkbox"}
-      %label{:for => "select-all-authorities"} All
-
-    .btn-group
-      %button.btn
-        %i.fa.fa-pencil-alt
-        Edit
-      %button.btn
-        %i.fa.fa-trash
-        Delete
-
-  .btn-group
-    = link_to new_authority_path, class: 'btn btn-light' do
-      %i.fa.fa-plus
-      Create
-
 .cards
   - @authorities.each do |authority|
-    .authority
-      %h1= authority.name
-      = link_to "Open", authority, class: ""
-      = link_to "Website", authority.website, class: ""
+    .card.authority-card
+      .card-header= authority.organization
+      .card-body
+        %h3.card-title= authority.name
+        /%h6.card-subtitle.text-muted= authority.organization
+
+        %p.card-text
+
+        .links
+          = link_to authority do
+            %i.fa.fa-folder-open
+            Open
+          = link_to "mailto:#{authority.email}" do
+            %i.fa.fa-envelope
+            Email
+          = link_to authority.website do
+            %i.fa.fa-external-link-alt
+            Website
+          = link_to new_authority_cert_signing_request_path(authority) do
+            %i.fa.fa-bolt
+            Request
+
+  = link_to new_authority_path, class: "card authority-card new-authority-card" do
+    %i.fa.fa-plus
+    New Authority

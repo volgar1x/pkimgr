@@ -2,15 +2,6 @@
 
 .cards {
   display: flex;
-
   flex-direction: row;
-
-  > * {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-
-  &.cards-space-between {
-    justify-content: space-between;
-  }
+  flex-wrap: wrap;
 }
