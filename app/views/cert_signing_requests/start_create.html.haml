@@ -1,0 +1,48 @@
+= form_for @csr do |f|
+  = f.hidden_field :subject_pubid
+  = hidden_field_tag "authority_id", @issuer.try(:id)
+
+  .form-label-group
+    = f.text_field :name, class: ["form-control", @csr.errors[:name].any? && "is-invalid"], placeholder: "Certificate Name"
+    = f.label :name, "Certificate Name"
+    - @csr.errors.messages[:name].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+
+  .form-group.row
+    = f.label :subject_key_id, "Subject Key", class: "col-md-2"
+    .col-md-10.row
+      .col-md
+        = f.collection_select :subject_key_id, @crypto_keys, :id, :name, {}, class: ["form-control", @csr.errors[:subject_key_id].any? && "is-invalid"]
+        - @csr.errors.messages[:subject_key_id].each do |error|
+          %i.fa.fa-exclamation
+          = error
+      .col-md
+        .form-label-group
+          = f.password_field :subject_password, class: ["form-control", @csr.errors[:subject_password].any? && "is-invalid"], placeholder: "Subject Key Password"
+          = f.label :subject_password, "Subject Key Password"
+          - @csr.errors.messages[:subject_password].each do |error|
+            .invalid-feedback
+              %i.fa.fa-exclamation
+              = error
+
+  .form-group.row
+    = f.label :profile_id, "Profile", class: "col-md-2"
+    .col-md-10
+      = f.collection_select :profile_id, @profiles, :id, :name, {}, class: ["form-control", @csr.errors[:profile_id].any? && "is-invalid"]
+      - @csr.errors.messages[:profile_id].each do |error|
+        .invalid-feedback
+          %i.fa.fa-exclamation
+          = error
+
+  .actions.row
+    .col-md
+      %button.btn.btn-primary{:type => "submit"}
+        %i.fa.fa-certificate
+        Request Certficate
+
+    .col-md.text-right-md
+      = link_to request.referer, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back

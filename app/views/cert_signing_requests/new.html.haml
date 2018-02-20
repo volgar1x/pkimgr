@@ -1,45 +1,16 @@
-= form_for @csr do |f|
-  = hidden_field_tag "authority_id", params[:authority_id]
-
-  .form-label-group
-    = f.text_field :name, class: ["form-control", @csr.errors[:name].any? && "is-invalid"], placeholder: "Common Name"
-    = f.label :name, "Common Name"
-    - @csr.errors.messages[:name].each do |error|
-      .invalid-feedback
-        %i.fa.fa-exclamation
-        = error
+= form_tag start_create_cert_signing_requests_path, method: "post" do
+  = hidden_field_tag :issuer_id, @issuer.id
 
   .form-group.row
-    = f.label :subject_pubid, "Subject", class: "col-md-2"
-    .col-md-10
-      = f.collection_select :subject_pubid, @subjects, :pubid, :name, {}, class: ["form-control", @csr.errors[:subject_pubid].any? && "is-invalid"]
-      - @csr.errors.messages[:subject_pubid].each do |error|
-        .invalid-feedback
-          %i.fa.fa-exclamation
-          = error
-
-  .form-label-group
-    = f.password_field :subject_password, class: ["form-control", @csr.errors[:subject_password].any? && "is-invalid"], placeholder: "Subject Password"
-    = f.label :subject_password, "Subject Password"
-    - @csr.errors.messages[:subject_password].each do |error|
-      .invalid-feedback
-        %i.fa.fa-exclamation
-        = error
-
-  .form-group.row
-    = f.label :profile_id, "Profile", class: "col-md-2"
-    .col-md-10
-      = f.collection_select :profile_id, @profiles, :id, :name, {}, class: ["form-control", @csr.errors[:profile_id].any? && "is-invalid"]
-      - @csr.errors.messages[:profile_id].each do |error|
-        .invalid-feedback
-          %i.fa.fa-exclamation
-          = error
+    = label_tag :subject_pubid, "Subject", class: "col-md-2"
+    .col-md-10.radio-buttons
+      = collection_radio_buttons nil, :subject_pubid, @subjects, :pubid, :name
 
   .actions.row
     .col-md
       %button.btn.btn-primary{:type => "submit"}
-        %i.fa.fa-certificate
-        Request Certficate
+        %i.fa.fa-arrow-right
+        Continue
 
     .col-md.text-right-md
       = link_to request.referer, class: "btn btn-light" do

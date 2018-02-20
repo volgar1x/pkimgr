@@ -28,6 +28,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def self.find_by_pubid(pubid, allowed)
+    return nil unless pubid
     classname, pk = pubid_parse(pubid)
     theclass = activerecord_record_by_classname(classname, allowed)
     theclass && theclass.find(pk)

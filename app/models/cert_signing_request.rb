@@ -2,6 +2,7 @@ class CertSigningRequest < ApplicationRecord
   attr_accessor :subject_password
 
   belongs_to :subject, polymorphic: true
+  belongs_to :subject_key, class_name: "CryptoKey"
   belongs_to :profile, class_name: "CertProfile"
   belongs_to :certificate, required: false
   has_and_belongs_to_many :issuers, class_name: "Authority",
@@ -34,14 +35,14 @@ class CertSigningRequest < ApplicationRecord
   end
 
   def submit_req
-    sign_key = self.subject.get_sign_key(self.subject_password)
+    sign_key = self.subject.keys.find(self.subject_key_id)
     return nil unless sign_key
 
     req = OpenSSL::X509::Request.new
     req.version = 2
     req.subject = self.subject.x509 [["CN", self.name]]
     req.public_key = sign_key.public_key
-    req.sign sign_key, Rails.application.config.digest
+    req.sign sign_key.get_private_key(self.subject_password), Rails.application.config.digest
     self.pem = req.to_pem
     req
   end

@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   resources :certificates do
     get "renew" => :renew, on: :member
   end
-  resources :cert_signing_requests, path: "cert/requests"
+  resources :cert_signing_requests, path: "cert/requests", only: [:create] do
+    post "new" => :start_create, on: :collection, as: :start_create
+  end
   resources :cert_profiles, path: "cert/profiles"
 
   resources :authorities do

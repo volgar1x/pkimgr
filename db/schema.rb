@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180220130432) do
+ActiveRecord::Schema.define(version: 20180216173101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20180220130432) do
   create_table "cert_signing_requests", force: :cascade do |t|
     t.string "subject_type", null: false
     t.bigint "subject_id", null: false
+    t.bigint "subject_key_id", null: false
     t.bigint "profile_id", null: false
     t.bigint "certificate_id"
     t.string "name", null: false
@@ -70,11 +71,13 @@ ActiveRecord::Schema.define(version: 20180220130432) do
     t.datetime "updated_at", null: false
     t.index ["certificate_id"], name: "index_cert_signing_requests_on_certificate_id"
     t.index ["profile_id"], name: "index_cert_signing_requests_on_profile_id"
+    t.index ["subject_key_id"], name: "index_cert_signing_requests_on_subject_key_id"
     t.index ["subject_type", "subject_id"], name: "index_cert_signing_requests_on_subject_type_and_subject_id"
   end
 
   create_table "certificates", force: :cascade do |t|
     t.bigint "issuer_id", null: false
+    t.bigint "issuer_key_id", null: false
     t.string "subject_type", null: false
     t.bigint "subject_id", null: false
     t.bigint "profile_id", null: false
@@ -83,6 +86,7 @@ ActiveRecord::Schema.define(version: 20180220130432) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["issuer_id"], name: "index_certificates_on_issuer_id"
+    t.index ["issuer_key_id"], name: "index_certificates_on_issuer_key_id"
     t.index ["profile_id"], name: "index_certificates_on_profile_id"
     t.index ["subject_type", "subject_id"], name: "index_certificates_on_subject_type_and_subject_id"
   end
@@ -117,6 +121,8 @@ ActiveRecord::Schema.define(version: 20180220130432) do
 
   add_foreign_key "cert_profile_constraints", "cert_profiles", column: "profile_id"
   add_foreign_key "cert_signing_requests", "cert_profiles", column: "profile_id"
+  add_foreign_key "cert_signing_requests", "crypto_keys", column: "subject_key_id"
   add_foreign_key "certificates", "authorities", column: "issuer_id"
   add_foreign_key "certificates", "cert_profiles", column: "profile_id"
+  add_foreign_key "certificates", "crypto_keys", column: "issuer_key_id"
 end
