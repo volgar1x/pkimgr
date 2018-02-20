@@ -1,4 +1,4 @@
-class CryptoKeysController < ApplicationController
+class CryptoKeysController < SecureController
   before_action :set_owner
   before_action :set_crypto_key, except: [:new, :create]
 
@@ -21,14 +21,14 @@ class CryptoKeysController < ApplicationController
     if @crypto_key.valid? :generate
       @crypto_key.generate!
       @crypto_key.save!
-      redirect_to @owner, notice: "A new cryptographic key has been generated."
+      redirect_to @owner_path, notice: "A new cryptographic key has been generated."
     else
       render :new
     end
   end
 
   def import
-    crypto_key_params = params.require(:crypto_key).permit(:compute_public_pem, :name, :owner_password)
+    crypto_key_params = params.require(:crypto_key).permit(:compute_public_pem, :name, :owner_password, :private_pem, :public_pem)
     @crypto_key = CryptoKey.new(crypto_key_params)
     @crypto_key.owner = @owner
 
@@ -41,9 +41,8 @@ class CryptoKeysController < ApplicationController
         @crypto_key.public_pem = params[:crypto_key][:public_pem].read
       end
       @crypto_key.save!
-      redirect_to @owner, notice: "A new cryptographic key has been imported."
+      redirect_to @owner_path, notice: "A new cryptographic key has been imported."
     else
-      console
       render :new
     end
   end
@@ -69,9 +68,13 @@ class CryptoKeysController < ApplicationController
 
   private
     def set_owner
-      @owner = case request.path.split("/")[1]
-      when "authorities" then Authority.find(params[:authority_id]) if params[:authority_id]
-      when "profile" then current_user
+      case request.path.split("/")[1]
+      when "authorities" then
+        @owner = Authority.find(params[:authority_id])
+        @owner_path = @owner
+      when "profile" then
+        @owner = current_user
+        @owner_path = :profile
       end
     end
 

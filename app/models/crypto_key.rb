@@ -12,6 +12,7 @@ class CryptoKey < ApplicationRecord
   belongs_to :owner, polymorphic: true
 
   attr_accessor :algorithm, :key_size, :curve_name, :compute_public_pem, :owner_password, :export_type
+  validates :private_pem, presence: true, on: :import
   validates :algorithm, presence: true, inclusion: { in: ["RSA", "DSA", "ECDSA"] }, on: :generate
   validates :key_size, presence: true, numericality: { only_integer: true }, on: :generate
   validates :curve_name, presence: true, inclusion: { in: OpenSSL::PKey::EC.builtin_curves.map{|x| x[0]} }, on: :generate

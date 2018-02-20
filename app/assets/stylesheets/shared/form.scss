@@ -17,3 +17,9 @@ form {
     margin-top: 2rem;
   }
 }
+
+.form-group {
+  .is-invalid + .invalid-feedback {
+    display: block;
+  }
+}

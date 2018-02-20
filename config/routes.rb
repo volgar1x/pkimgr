@@ -26,15 +26,14 @@ Rails.application.routes.draw do
       post "cancel" => :cancel, on: :member
     end
   end
-  resources :users do
-    concerns :has_crypto_keys
-  end
+  resources :users
 
   resource :session, only: [:new, :create, :destroy], controller: "session"
   # resource :profile, only: [:edit, :update]
-  scope "/profile", controller: "profiles" do
-    get "/" => :edit, as: "edit_profile"
-    post "/" => :update, as: "profile"
+  scope "/profile", as: :profile, controller: "profiles" do
+    concerns :has_crypto_keys
+    get "/" => :edit
+    post "/" => :update
   end
 
   root to: 'misc#dashboard'

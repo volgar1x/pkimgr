@@ -25,14 +25,10 @@ class ProfilesController < SecureController
       return render :edit
     end
 
-    respond_to do |format|
-      if current_user.save
-        format.html { redirect_to edit_profile_path, notice: 'Your profile was successfully updated.' }
-        format.json { render :show, status: :ok, location: profile_path }
-      else
-        format.html { render :edit }
-        format.json { render json: current_user.errors, status: :unprocessable_entity }
-      end
+    if current_user.save
+      redirect_to profile_path, notice: 'Your profile was successfully updated.'
+    else
+      render :edit
     end
   end
 end

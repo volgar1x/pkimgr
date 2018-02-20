@@ -1,14 +1,15 @@
-= form_for @crypto_key, url: polymorphic_path([@owner, @crypto_key]), method: "post" do |f|
+= form_for @crypto_key, url: polymorphic_path([@owner_path, @crypto_key]), method: "post" do |f|
   %fieldset
     %legend Import
 
     .form-group.row
       = f.label :private_pem, "Private Key", class: "col-md-2"
-      = f.file_field :private_pem, class: ["col-md-10", @crypto_key.errors[:private_pem].any? && "is-invalid"]
-      - @crypto_key.errors.messages[:private_pem].each do |error|
-        .invalid-feedback
-          %i.fa.fa-exclamation
-          = error
+      .col-md-10
+        = f.file_field :private_pem, class: @crypto_key.errors[:private_pem].any? && "is-invalid"
+        - @crypto_key.errors.messages[:private_pem].each do |error|
+          .invalid-feedback
+            %i.fa.fa-exclamation
+            = error
 
     .form-group.row
       = f.label :public_pem, "Public Key", class: "col-md-2"
