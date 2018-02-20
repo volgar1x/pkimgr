@@ -1,28 +1,26 @@
 .row
   .col-md
-    %h1.display-3= @authority.name
-  .col-md.text-right-md
-    = link_to edit_authority_path(@authority), class: "btn btn-light" do
-      %i.fa.fa-pencil-alt
-      Edit
+    %h1.display-3
+      = @authority.name
+      %small
+        = link_to edit_authority_path(@authority), class: "btn btn-light" do
+          %i.fa.fa-pencil-alt
+          Edit
 
-- unless @authority.encrypt_key_pem
-  .alert.alert-warning This authority does not have any encryption key. Please generate or import one.
+        = link_to new_authority_cert_signing_request_path(@authority), class: "btn btn-light" do
+          %i.fa.fa-bolt
+          Request Certificate from us
 
-- unless @authority.sign_key_pem
-  .alert.alert-warning This authority does not have any signature key. Please generate or import one.
-
-%div{:style => "margin-bottom: 1rem"}
-  = link_to "Import Private Key", import_authority_path(@authority), class: "btn btn-light"
-  = link_to "Generate Private Key", genpkey_authority_path(@authority), class: "btn btn-light"
-  = link_to "Export Private Key", export_authority_path(@authority), class: "btn btn-light"
-  = link_to "Request Certificate from us", new_authority_cert_signing_request_path(@authority), class: "btn btn-light"
+%h3 Keys
+= render "crypto_keys/table", keys: @authority.keys, owner: @authority
 
 %h3 Certificates
 = render "certificates/table", certificates: @authority.certificates
 
-%h3 Requested Certificates
-= render "cert_signing_requests/table_subject", csrs: @authority.subject_requests
+- if @authority.subject_requests.any?
+  %h3 Requests You've Sent
+  = render "cert_signing_requests/table_subject", csrs: @authority.subject_requests
 
-%h3 Received Requests
-= render "cert_signing_requests/table_issuer", csrs: @authority.issuer_requests, issuer: @authority
+- if @authority.issuer_requests.any?
+  %h3 Requests To Be Signed
+  = render "cert_signing_requests/table_issuer", csrs: @authority.issuer_requests, issuer: @authority

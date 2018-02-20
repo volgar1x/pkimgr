@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_and_belongs_to_many :authorities
   has_many :requests, class_name: "CertSigningRequest", as: :subject
   has_many :certificates, class_name: "Certificate", as: :subject
+  has_many :keys, class_name: "CryptoKey", as: :owner
 
   def name
     "#{self.firstname} #{self.lastname}"
@@ -19,21 +20,5 @@ class User < ApplicationRecord
       # CN needs to be set by caller
       *additionals,
     ]
-  end
-
-  def get_encrypt_key(password)
-    self.encrypt_key_pem && OpenSSL::PKey.read(self.encrypt_key_pem, password)
-  end
-
-  def set_encrypt_key(e, password)
-    self.encrypt_key_pem = e.to_pem(Rails.application.config.cipher, password)
-  end
-
-  def get_sign_key(password)
-    self.sign_key_pem && OpenSSL::PKey.read(self.sign_key_pem, password)
-  end
-
-  def set_sign_key(e, password)
-    self.sign_key_pem = e.to_pem(Rails.application.config.cipher, password)
   end
 end

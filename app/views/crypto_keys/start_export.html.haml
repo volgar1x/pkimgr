@@ -1,0 +1,21 @@
+= form_for @crypto_key, url: export_crypto_key_path(@crypto_key), method: "post" do |f|
+  .form-label-group
+    = f.password_field :owner_password, class: ["form-control", @crypto_key.errors[:owner_password].any? && "is-invalid"], placeholder: "Confirm Your Password"
+    = f.label :owner_password, "Confirm Your Password"
+    - @crypto_key.errors.messages[:owner_password].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+
+  .actions.row
+    .col-md
+      %button.btn.btn-primary{:type => "submit", :name => "crypto_key[export_type]", :value => "private"}
+        %i.fa.fa-cloud-download-alt
+        Export Private
+      %button.btn.btn-primary{:type => "submit", :name => "crypto_key[export_type]", :value => "public"}
+        %i.fa.fa-cloud-download-alt
+        Export Public
+    .col-md.text-right-md
+      = link_to request.referer, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back

@@ -10,6 +10,7 @@ class Authority < ApplicationRecord
     association_foreign_key: "csr_id"
   has_many :certificates, class_name: "Certificate", as: :subject
   has_many :issued, class_name: "Certificate", inverse_of: :issuer
+  has_many :keys, class_name: "CryptoKey", as: :owner
 
   def x509(additionals = [])
     OpenSSL::X509::Name.new [
@@ -30,21 +31,5 @@ class Authority < ApplicationRecord
       self.update!(next_serial: serial + 1)
       serial
     end
-  end
-
-  def get_encrypt_key(password)
-    self.encrypt_key_pem && OpenSSL::PKey.read(self.encrypt_key_pem, password)
-  end
-
-  def set_encrypt_key(e, password)
-    self.encrypt_key_pem = e.to_pem(Rails.application.config.cipher, password)
-  end
-
-  def get_sign_key(password)
-    self.sign_key_pem && OpenSSL::PKey.read(self.sign_key_pem, password)
-  end
-
-  def set_sign_key(e, password)
-    self.sign_key_pem = e.to_pem(Rails.application.config.cipher, password)
   end
 end

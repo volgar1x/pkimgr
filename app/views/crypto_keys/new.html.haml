@@ -1,0 +1,67 @@
+= form_for @crypto_key, url: polymorphic_path([@owner, @crypto_key]), method: "post" do |f|
+  %fieldset
+    %legend Import
+
+    .form-group.row
+      = f.label :private_pem, "Private Key", class: "col-md-2"
+      = f.file_field :private_pem, class: ["col-md-10", @crypto_key.errors[:private_pem].any? && "is-invalid"]
+      - @crypto_key.errors.messages[:private_pem].each do |error|
+        .invalid-feedback
+          %i.fa.fa-exclamation
+          = error
+
+    .form-group.row
+      = f.label :public_pem, "Public Key", class: "col-md-2"
+      .col-md-10
+        = f.file_field :public_pem, class: @crypto_key.errors[:public_pem].any? && "is-invalid"
+        %label
+          Compute From Private Key
+          = f.check_box :compute_public_pem
+      - @crypto_key.errors.messages[:public_pem].each do |error|
+        .invalid-feedback
+          %i.fa.fa-exclamation
+          = error
+
+  %fieldset
+    %legend Generate
+
+    .form-group.row
+      = f.label :algorithm, "Algorithm", class: "col-md-2"
+      = f.select :algorithm, options_for_select(["RSA", "DSA", "ECDSA"]), {}, class: "form-control col-md-10"
+
+    .form-group.row
+      = f.label :key_size, "Key Size", class: "col-md-2"
+      = f.text_field :key_size, class: "form-control col-md-10", value: "2048"
+
+    .form-group.row
+      = f.label :curve_name, "Curve (ECDSA only)", class: "col-md-2"
+      = f.select :curve_name, options_for_select(OpenSSL::PKey::EC.builtin_curves.map{|x| x[0]}), {}, class: "form-control col-md-10"
+
+  .form-label-group
+    = f.text_field :name, class: ["form-control", @crypto_key.errors[:name].any? && "is-invalid"], placeholder: "Name This Key", value: "Main"
+    = f.label :name, "Name This Key"
+    - @crypto_key.errors.messages[:name].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+
+  .form-label-group
+    = f.password_field :owner_password, class: ["form-control", @crypto_key.errors[:owner_password].any? && "is-invalid"], placeholder: "Confirm Your Password"
+    = f.label :owner_password, "Confirm Your Password"
+    - @crypto_key.errors.messages[:owner_password].each do |error|
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = error
+
+  .row.actions
+    .col-md
+      %button.btn.btn-primary{:type => "submit", :name => "crypto_key[action]", :value => "import"}
+        %i.fa.fa-cloud-upload-alt
+        Import
+      %button.btn.btn-primary{:type => "submit", :name => "crypto_key[action]", :value => "generate"}
+        %i.fa.fa-sync
+        Generate
+    .col-md.text-right-md
+      = link_to request.referer, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back

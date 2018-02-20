@@ -1,17 +1,21 @@
 Rails.application.routes.draw do
+  concern :has_crypto_keys do
+    resources :crypto_keys, only: [:new, :create], path: "keys"
+  end
+
+  resources :crypto_keys, only: [], path: "keys" do
+    get "export" => :start_export, on: :member
+    post "export" => :export, on: :member
+  end
+
   resources :certificates do
     get "renew" => :renew, on: :member
   end
   resources :cert_signing_requests, path: "cert/requests"
   resources :cert_profiles, path: "cert/profiles"
-  resources :authorities do
-    get "import" => :start_import, on: :member
-    post "import" => :import, on: :member
-    get "genpkey" => :start_genpkey, on: :member
-    post "genpkey" => :genpkey, on: :member
-    get "export" => :start_export, on: :member
-    post "export" => :export, on: :member
 
+  resources :authorities do
+    concerns :has_crypto_keys
     resources :certificates, shallow: true
     resources :cert_signing_requests, path: "csr", only: [:new] do
       get "accept" => :start_accept, on: :member
@@ -22,20 +26,15 @@ Rails.application.routes.draw do
       post "cancel" => :cancel, on: :member
     end
   end
-  resources :users
+  resources :users do
+    concerns :has_crypto_keys
+  end
 
   resource :session, only: [:new, :create, :destroy], controller: "session"
   # resource :profile, only: [:edit, :update]
   scope "/profile", controller: "profiles" do
     get "/" => :edit, as: "edit_profile"
     post "/" => :update, as: "profile"
-
-    get "/import" => :start_import, as: "start_import_profile"
-    post "/import" => :import, as: nil
-    get "/export" => :start_export, as: "start_export_profile"
-    post "/export" => :export, as: nil
-    get "/genpkey" => :start_genpkey, as: "start_genpkey_profile"
-    post "/genpkey" => :genpkey, as: nil
   end
 
   root to: 'misc#dashboard'

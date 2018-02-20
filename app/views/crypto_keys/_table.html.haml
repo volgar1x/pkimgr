@@ -1,0 +1,34 @@
+- if keys.empty?
+  .alert.alert-warning
+    This #{owner.class.name.downcase} does not have any key.
+    Please #{link_to "import or generate one", new_polymorphic_path([owner, CryptoKey])}.
+- else
+  %table.table.table-hover
+    %thead
+      %tr
+        %th Name
+        %th Algorithm
+        %th Specs
+        %th.text-right
+          = link_to new_polymorphic_path([owner, CryptoKey]), class: "btn btn-light" do
+            %i.fa.fa-plus
+            New Key
+    %tbody
+      - keys.each do |key|
+        %tr
+          %td= key.name
+          %td= key.public_key.class.name.split("::")[-1]
+          %td
+            - case key.public_key.class.name
+            - when "OpenSSL::PKey::RSA" then
+              #{key.public_key.n.num_bits} bits
+            - when "OpenSSL::PKey::DSA" then
+              #{key.public_key.p.num_bits} bits
+            - when "OpenSSL::PKey::EC" then
+              = key.public_key.group.curve_name
+            - else
+              %em unknown
+          %td.text-right
+            = link_to export_crypto_key_path(key), class: "btn" do
+              %i.fa.fa-share-alt
+              Export

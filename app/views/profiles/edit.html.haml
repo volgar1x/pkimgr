@@ -3,17 +3,7 @@
 
   %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-  = link_to start_genpkey_profile_path, class: "btn" do
-    %i.fa.fa-sync-alt
-    Generate Private Keys
-
-  = link_to start_import_profile_path, class: "btn" do
-    %i.fa.fa-cloud-upload-alt
-    Import Private Keys
-
-  = link_to start_export_profile_path, class: "btn" do
-    %i.fa.fa-cloud-download-alt
-    Export Private Keys
+= render "crypto_keys/table", keys: @user.keys, subject: @user
 
 = form_for current_user, as: :profile, url: profile_path, method: "post" do |f|
   .row

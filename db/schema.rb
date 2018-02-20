@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180216173101) do
+ActiveRecord::Schema.define(version: 20180220130432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,8 +25,6 @@ ActiveRecord::Schema.define(version: 20180216173101) do
     t.string "country"
     t.string "state"
     t.string "organization"
-    t.text "sign_key_pem"
-    t.text "encrypt_key_pem"
     t.bigint "next_serial", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -89,6 +87,17 @@ ActiveRecord::Schema.define(version: 20180216173101) do
     t.index ["subject_type", "subject_id"], name: "index_certificates_on_subject_type_and_subject_id"
   end
 
+  create_table "crypto_keys", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "owner_type"
+    t.bigint "owner_id"
+    t.text "private_pem", null: false
+    t.text "public_pem", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_type", "owner_id"], name: "index_crypto_keys_on_owner_type_and_owner_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -101,8 +110,6 @@ ActiveRecord::Schema.define(version: 20180216173101) do
     t.string "country"
     t.string "state"
     t.string "phone"
-    t.text "sign_key_pem"
-    t.text "encrypt_key_pem"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
