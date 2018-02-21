@@ -78,7 +78,7 @@ class CertSigningRequestsController < SecureController
       cert.not_after = cert.not_before + @csr.validity_duration.to_i.years
       cert.public_key = req.public_key
       cert.subject = req.subject
-      cert.issuer = issuer_certificate.try(:x509).try(:issuer) || cert.subject
+      cert.issuer = issuer_certificate.try(:x509).try(:subject) || cert.subject
 
       cert_ext = OpenSSL::X509::ExtensionFactory.new
       cert_ext.subject_certificate = cert
