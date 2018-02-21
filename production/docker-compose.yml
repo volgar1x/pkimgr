@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    environment:
+      - DATABASE_URL=postgresql://database/postgres
+      - SECRET_KEY_BASE=e2d6239fb7ab0cdc226425cd9134bd808643b3f2919da0446ef68cb3930df451d9eafeb332f2389f8a73124410112eff277649b6a0a50032f5a3d365ebb64a1a
+    links:
+      - database
+
+  database:
+    image: postgres:10-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data:rw
+
+  front:
+    image: nginx:alpine
+
+volumes:
+  pgdata:
+    driver: default
+
