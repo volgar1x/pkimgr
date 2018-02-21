@@ -12,10 +12,10 @@ Rails.application.routes.draw do
     get "renew" => :renew, on: :member
     get "download" => :download, on: :member
   end
+
   resources :cert_signing_requests, path: "cert/requests", only: [:create] do
     post "new" => :start_create, on: :collection, as: :start_create
   end
-  resources :cert_profiles, path: "cert/profiles"
 
   resources :authorities do
     concerns :has_crypto_keys
@@ -28,14 +28,20 @@ Rails.application.routes.draw do
       post "cancel" => :cancel, on: :member
     end
   end
-  resources :users
+
+  resources :users, only: [:show]
 
   resource :session, only: [:new, :create, :destroy], controller: "session"
-  # resource :profile, only: [:edit, :update]
-  scope "/profile", as: :profile, controller: "profiles" do
+
+  resource :profile, only: [:edit, :update] do
     concerns :has_crypto_keys
-    get "/" => :edit
-    post "/" => :update
+  end
+
+  namespace :admin do
+    get "/" => "misc#dashboard"
+
+    resources :users
+    resources :cert_profiles, path: "cert/profiles"
   end
 
   root to: 'misc#dashboard'

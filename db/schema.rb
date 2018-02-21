@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(version: 20180216173101) do
     t.string "country"
     t.string "state"
     t.string "phone"
+    t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

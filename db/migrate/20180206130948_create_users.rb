@@ -12,6 +12,7 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :country
       t.string :state
       t.string :phone
+      t.boolean :admin, null: false, default: false
 
       t.timestamps
     end

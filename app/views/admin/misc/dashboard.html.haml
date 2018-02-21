@@ -1,0 +1,16 @@
+%h1
+  %i.fa.fa-unlock-alt
+  Admin Zone
+
+.row.cards
+  = link_to admin_users_path, class: "col-2 card text-center" do
+    .card-body
+      %h1
+        %i.fa.fa-users
+      = pluralize User.count, "user"
+
+  = link_to admin_cert_profiles_path, class: "col-2 card text-center" do
+    .card-body
+      %h1
+        %i.fa.fa-code
+      = pluralize CertProfile.count, "profile"

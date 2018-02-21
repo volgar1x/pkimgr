@@ -1,4 +1,4 @@
-class CertProfilesController < ApplicationController
+class Admin::CertProfilesController < Admin::Controller
   before_action :set_cert_profile, only: [:show, :edit, :update, :destroy]
 
   # GET /cert_profiles

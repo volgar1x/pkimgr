@@ -4,4 +4,17 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  .card {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+a.card {
+  color: #212529;
+  &:hover {
+    color: #212529;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.03);
+  }
 }

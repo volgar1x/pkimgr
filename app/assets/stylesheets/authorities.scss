@@ -1,7 +1,5 @@
 .authority-card {
   width: 16em;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
   .card-subtitle {
     margin-bottom: 1rem;
   }
@@ -23,12 +21,6 @@
   justify-content: center;
   align-items: center;
   padding: 1em;
-  color: #212529;
-  &:hover {
-    color: #212529;
-    text-decoration: none;
-    background: rgba(0, 0, 0, 0.03);
-  }
   i {
     font-size: 3em;
     margin-bottom: 0.2em;
