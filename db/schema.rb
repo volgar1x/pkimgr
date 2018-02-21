@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20180216173101) do
     t.bigint "issuer_key_id", null: false
     t.string "subject_type", null: false
     t.bigint "subject_id", null: false
+    t.bigint "subject_key_id", null: false
     t.bigint "profile_id", null: false
     t.text "pem", null: false
     t.datetime "revoked_at"
@@ -90,6 +91,7 @@ ActiveRecord::Schema.define(version: 20180216173101) do
     t.index ["issuer_key_id"], name: "index_certificates_on_issuer_key_id"
     t.index ["profile_id"], name: "index_certificates_on_profile_id"
     t.index ["signed_by_id"], name: "index_certificates_on_signed_by_id"
+    t.index ["subject_key_id"], name: "index_certificates_on_subject_key_id"
     t.index ["subject_type", "subject_id"], name: "index_certificates_on_subject_type_and_subject_id"
   end
 
@@ -128,4 +130,5 @@ ActiveRecord::Schema.define(version: 20180216173101) do
   add_foreign_key "certificates", "cert_profiles", column: "profile_id"
   add_foreign_key "certificates", "certificates", column: "signed_by_id"
   add_foreign_key "certificates", "crypto_keys", column: "issuer_key_id"
+  add_foreign_key "certificates", "crypto_keys", column: "subject_key_id"
 end

@@ -86,7 +86,7 @@ class CertSigningRequestsController < SecureController
       @csr.profile.add_extensions cert, cert_ext
 
       sign_key = if issuer_certificate
-        issuer_certificate.issuer_key
+        issuer_certificate.subject_key
       else
         @csr.subject_key
       end
@@ -98,6 +98,7 @@ class CertSigningRequestsController < SecureController
         issuer: @issuer,
         issuer_key: sign_key,
         subject: @csr.subject,
+        subject_key: @csr.subject_key,
         profile: @csr.profile,
         pem: cert_pem,
       )
