@@ -93,7 +93,8 @@ class CertSigningRequestsController < SecureController
       cert.sign sign_key.get_private_key(@csr.issuer_password), Rails.application.config.digest
       cert_pem = cert.to_pem
 
-      certificate = Certificate.create(
+      certificate = Certificate.create!(
+        signed_by: issuer_certificate,
         issuer: @issuer,
         issuer_key: sign_key,
         subject: @csr.subject,

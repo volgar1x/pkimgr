@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 20180216173101) do
   end
 
   create_table "certificates", force: :cascade do |t|
+    t.bigint "signed_by_id"
     t.bigint "issuer_id", null: false
     t.bigint "issuer_key_id", null: false
     t.string "subject_type", null: false
@@ -88,6 +89,7 @@ ActiveRecord::Schema.define(version: 20180216173101) do
     t.index ["issuer_id"], name: "index_certificates_on_issuer_id"
     t.index ["issuer_key_id"], name: "index_certificates_on_issuer_key_id"
     t.index ["profile_id"], name: "index_certificates_on_profile_id"
+    t.index ["signed_by_id"], name: "index_certificates_on_signed_by_id"
     t.index ["subject_type", "subject_id"], name: "index_certificates_on_subject_type_and_subject_id"
   end
 
@@ -124,5 +126,6 @@ ActiveRecord::Schema.define(version: 20180216173101) do
   add_foreign_key "cert_signing_requests", "crypto_keys", column: "subject_key_id"
   add_foreign_key "certificates", "authorities", column: "issuer_id"
   add_foreign_key "certificates", "cert_profiles", column: "profile_id"
+  add_foreign_key "certificates", "certificates", column: "signed_by_id"
   add_foreign_key "certificates", "crypto_keys", column: "issuer_key_id"
 end

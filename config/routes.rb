@@ -8,8 +8,9 @@ Rails.application.routes.draw do
     post "export" => :export, on: :member
   end
 
-  resources :certificates do
+  resources :certificates, only: [:index, :show] do
     get "renew" => :renew, on: :member
+    get "download" => :download, on: :member
   end
   resources :cert_signing_requests, path: "cert/requests", only: [:create] do
     post "new" => :start_create, on: :collection, as: :start_create
@@ -18,7 +19,6 @@ Rails.application.routes.draw do
 
   resources :authorities do
     concerns :has_crypto_keys
-    resources :certificates, shallow: true
     resources :cert_signing_requests, path: "csr", only: [:new] do
       get "accept" => :start_accept, on: :member
       post "accept" => :accept, on: :member

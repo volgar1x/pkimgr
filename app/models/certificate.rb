@@ -1,4 +1,5 @@
 class Certificate < ApplicationRecord
+  belongs_to :signed_by, class_name: "Certificate", required: false
   belongs_to :issuer, class_name: "Authority", inverse_of: :issued
   belongs_to :issuer_key, class_name: "CryptoKey"
   belongs_to :subject, polymorphic: true

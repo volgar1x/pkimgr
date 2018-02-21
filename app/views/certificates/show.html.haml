@@ -1,19 +1,16 @@
-%p#notice= notice
-%p
-  %strong Issuer:
-  = @certificate.issuer
-%p
-  %strong Subject:
-  = @certificate.subject
-%p
-  %strong Profile:
-  = @certificate.profile
-%p
-  %strong Pem:
-  %code= simple_format(@certificate.pem)
-%p
-  %strong Revoked at:
-  = @certificate.revoked_at
-= link_to 'Edit', edit_certificate_path(@certificate)
-|
-= link_to 'Back', certificates_path
+.row
+  .col-md-9
+    %h1.display-3
+      = @certificate.name
+    %h1.text-muted
+      Issued By: #{render @certificate.issuer},
+      For: #{render @certificate.subject}
+  .col-md-3.text-right-md.align-bottom.buttons
+    = link_to renew_certificate_path(@certificate), class: "btn btn-light" do
+      %i.fa.fa-certificate
+      Renew
+    = link_to download_certificate_path(@certificate), class: "btn btn-light" do
+      %i.fa.fa-cloud-download-alt
+      Download
+
+%code= @certificate.x509.to_text.gsub("\n", "<br/>").gsub(" ", "&nbsp;").html_safe

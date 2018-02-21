@@ -20,3 +20,9 @@
     }
   }
 }
+
+.align-bottom {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.5rem;
+}
