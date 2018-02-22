@@ -5,7 +5,7 @@
 
 = render "crypto_keys/table", keys: current_user.keys, owner: :profile
 
-= form_for current_user, as: :profile, url: profile_path, method: "post" do |f|
+= form_for current_user, as: :profile, url: profile_path do |f|
   .row
     .col-lg.form-label-group
       = f.text_field :firstname, class: "form-control", placeholder: "First Name", (current_user.try(:firstname).nil? ? "required" : "readonly") => true

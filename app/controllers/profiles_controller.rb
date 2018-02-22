@@ -26,7 +26,7 @@ class ProfilesController < SecureController
     end
 
     if current_user.save
-      redirect_to profile_path, notice: 'Your profile was successfully updated.'
+      redirect_to edit_profile_path, notice: 'Your profile was successfully updated.'
     else
       render :edit
     end
