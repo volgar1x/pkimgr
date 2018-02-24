@@ -9,9 +9,9 @@ class CertSigningRequestsController < SecureController
 
   def start_create
     @csr ||= CertSigningRequest.new
-    @csr.subject = @subject
+    @csr.subject ||= @subject
     @profiles = CertProfile.all
-    @crypto_keys = @subject.keys
+    @crypto_keys = @csr.subject.keys
   end
 
   def create
