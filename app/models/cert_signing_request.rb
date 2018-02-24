@@ -46,4 +46,8 @@ class CertSigningRequest < ApplicationRecord
     self.pem = req.to_pem
     req
   end
+
+  def x509
+    OpenSSL::X509::Request.new self.pem
+  end
 end

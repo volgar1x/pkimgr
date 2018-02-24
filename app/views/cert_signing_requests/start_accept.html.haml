@@ -1,3 +1,6 @@
+%div{:style => "max-height: 10em; overflow-y: scroll; margin-bottom: 2rem"}
+  %code= @csr.x509.to_text.gsub("\n", "<br/>").gsub(" ", "&nbsp;").html_safe
+
 = form_for @csr, url: accept_authority_cert_signing_request_path(@issuer, @csr), method: "post" do |f|
   .form-label-group
     = f.password_field :issuer_password, class: ["form-control", @csr.errors[:issuer_password].any? && "is-invalid"], placeholder: "Password", required: true
