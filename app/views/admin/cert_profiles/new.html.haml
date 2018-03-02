@@ -1,3 +1,10 @@
-%h1 New Cert Profile
-= render 'form', cert_profile: @cert_profile
-= link_to 'Back', cert_profiles_path
+%h1
+  %i.fa.fa-unlock-alt
+  Admin Zone
+  %small
+    %i.fa.fa-angle-double-right.fa-xs
+    Profiles
+    %i.fa.fa-angle-double-right.fa-xs
+    Creation
+
+= render "form"

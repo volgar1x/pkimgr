@@ -1,14 +1,59 @@
-= form_with(model: cert_profile, local: true) do |form|
-  - if cert_profile.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(cert_profile.errors.count, "error")
-        prohibited this cert_profile from being saved:
-      %ul
-        - cert_profile.errors.full_messages.each do |message|
-          %li= message
-  .field
-    = form.label :name
-    = form.text_field :name, id: :cert_profile_name
-  .actions
-    = form.submit
+-# - value_columns = Set.new @profile.constraints.map(&:value).map(&:keys).flatten
+- value_columns = Set["oid", "value", "critical"]
+
+= form_for [:admin, @profile] do |f|
+  .form-label-group
+    = f.text_field :name, class: ["form-control", @profile.errors[:name].any? && "is-invalid"], required: true, placeholder: "Profile Name"
+    = f.label :name, "Profile Name"
+
+  %table.table.table-hover
+    %thead
+      %tr
+        %th Type
+        - value_columns.each do |column|
+          %th= constraint_column(column)
+        %th
+    %tbody
+      - @profile.constraints.each do |constraint|
+        %tr
+          %td= constraint_type(constraint)
+
+          - value_columns.each do |column|
+            %td= text_field_tag "cert_profile[constraints][#{constraint.id}][#{column}]", constraint.value[column], class: "form-control"
+
+          %td
+            %button.btn{:type => "submit", :name => "form_action", :value => "edit_constraint #{constraint.id}"}
+              %i.fa.fa-edit
+
+            %button.btn{:type => "submit", :name => "form_action", :value => "destroy_constraint #{constraint.id}"}
+              %i.fa.fa-trash
+      %tr
+        - if @profile_constraint.nil?
+          %td.text-center{:colspan => value_columns.size + 2}
+            %button.btn{:type => "submit", :name => "form_action", :value => "create_constraint"}
+              %i.fa.fa-plus
+              Add
+        - else
+          %td= constraint_type(@profile_constraint)
+
+          - value_columns.each do |column|
+            %td= text_field_tag "cert_profile_constraint[value][#{column}]", @profile_constraint.value[column], class: "form-control"
+
+          %td
+            %button.btn{:type => "submit", :name => "form_action", :value => "create_constraint"}
+              %i.fa.fa-check
+
+  .actions.row
+    .col-md
+      %button.btn.btn-primary{:type => "submit", :name => "form_action", :value => params["action"]}
+        - if ["new", "create"].include? params["action"]
+          %i.fa.fa-plus
+          Create Profile
+        - elsif ["edit", "update"].include? params["action"]
+          %i.fa.fa-edit
+          Edit #{@profile.name}
+
+    .col-md.text-right-md
+      = link_to request.referer, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back
