@@ -75,6 +75,38 @@ class AuthoritiesController < SecureController
     end
   end
 
+  def start_invite_user
+  end
+
+  def invite_user
+    Authority.transaction do
+      fullname = params[:authority][:user_name]
+      firstname, lastname = fullname.split(" ", 2)
+      user = User.find_by firstname: firstname, lastname: lastname
+
+      unless user
+        @error = "Unknown user"
+        return render :start_invite_user
+      end
+
+      if @authority.users.include? user
+        @error = "This user has already access to this authority"
+        return render :start_invite_user
+      end
+
+      @authority.users << user
+      redirect_to @authority, notice: "#{user.name} has been invited."
+    end
+  end
+
+  def kick_user
+    Authority.transaction do
+      user = User.find params[:user_id]
+      @authority.users.delete user
+      redirect_to @authority, notice: "#{user.name} has no longer access to this authority."
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_authority

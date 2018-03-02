@@ -27,6 +27,9 @@ Rails.application.routes.draw do
       get "cancel" => :start_cancel, on: :member
       post "cancel" => :cancel, on: :member
     end
+    get "users/new" => :start_invite_user, on: :member, as: "invite_user"
+    post "users" => :invite_user, on: :member
+    delete "users/:user_id" => :kick_user, on: :member, as: "kick_user"
   end
 
   resources :users, only: [:show]

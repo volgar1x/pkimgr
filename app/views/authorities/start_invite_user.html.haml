@@ -1,0 +1,23 @@
+%h1
+  = @authority.name
+  invitation
+
+= form_tag users_authority_path(@authority) do
+  .form-label-group
+    = text_field_tag "authority[user_name]", params[:authority] && params[:authority][:user_name], class: ["form-control", @error.nil? || "is-invalid"], placeholder: "User Name", required: true
+    = label_tag "authority[user_name]", "User Name"
+    - unless @error.nil?
+      .invalid-feedback
+        %i.fa.fa-exclamation
+        = @error
+
+  .actions.row
+    .col-md
+      %button.btn.btn-primary{:type => "submit"}
+        %i.fa.fa-user-plus
+        Invite
+
+    .col-md.text-right-md
+      = link_to @authority, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back

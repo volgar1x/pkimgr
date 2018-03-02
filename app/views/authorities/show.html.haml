@@ -17,6 +17,27 @@
 %h3 Certificates
 = render "certificates/table", certificates: @authority.certificates
 
+%h3 People
+%table.table.table-hover
+  %thead
+    %tr
+      %th Name
+      %th
+  %tbody
+    - @authority.users.each do |user|
+      %tr
+        %td= render user
+        %td
+          = link_to kick_user_authority_path(@authority, user_id: user.id), class: "btn", data: {method: "delete"} do
+            %i.fa.fa-user-times
+            Kick
+    %tr
+      %td{:colspan => "2"}
+        = link_to invite_user_authority_path(@authority), class: "btn" do
+          %i.fa.fa-user-plus
+          Invite a new user
+
+
 - if @authority.subject_requests.any?
   %h3 Requests You've Sent
   = render "cert_signing_requests/table_subject", csrs: @authority.subject_requests
