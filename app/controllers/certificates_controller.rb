@@ -14,16 +14,14 @@ class CertificatesController < SecureController
 
   def download
     data = ""
-    if @certificate.signed_by
-      it = @certificate
-      while it.signed_by
-        data << it.x509.to_pem
-        data << "\n"
-        it = it.signed_by
-      end
-    else
-      data << @certificate.x509.to_pem
+
+    it = @certificate
+    while it
+      data << it.x509.to_pem
+      data << "\n"
+      it = it.signed_by
     end
+
     send_data data, type: "application/x-x509-ca-cert",
                     filename: "#{@certificate.name}.crt"
   end
