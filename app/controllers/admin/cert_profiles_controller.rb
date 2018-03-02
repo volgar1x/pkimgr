@@ -24,11 +24,9 @@ class Admin::CertProfilesController < Admin::Controller
   # POST /cert_profiles
   # POST /cert_profiles.json
   def create
-    @profile = CertProfile.new(cert_profile_params)
+    @profile = CertProfile.new params.require(:cert_profile).permit(:name)
 
-    if params["form_action"] != "create"
-      # @profile.save if @profile.new_record?
-
+    unless ["new", "create"].include? params["form_action"]
       action, action_arg = params["form_action"].split(" ", 2)
 
       case action
@@ -52,7 +50,7 @@ class Admin::CertProfilesController < Admin::Controller
         end
       end
 
-      return render :edit
+      return render :new
     end
 
     if @profile.save
@@ -65,9 +63,9 @@ class Admin::CertProfilesController < Admin::Controller
   # PATCH/PUT /cert_profiles/1
   # PATCH/PUT /cert_profiles/1.json
   def update
-    @profile.assign_attributes(cert_profile_params)
+    @profile.assign_attributes params.require(:cert_profile).permit(:name)
 
-    if params["form_action"] != "update"
+    unless ["edit", "update"].include? params["form_action"]
       action, action_arg = params["form_action"].split(" ", 2)
       case action
       when "edit_constraint"
@@ -100,19 +98,13 @@ class Admin::CertProfilesController < Admin::Controller
   # DELETE /cert_profiles/1
   # DELETE /cert_profiles/1.json
   def destroy
-    @profile.constraints.destroy_all
     @profile.destroy
-    redirect_to admin_cert_profiles_path, notice: 'Cert profile was successfully destroyed.'
+    redirect_to admin_cert_profiles_path, notice: 'Profile was successfully destroyed.'
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_cert_profile
       @profile = CertProfile.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def cert_profile_params
-      params.require(:cert_profile).permit(:name)
     end
 end

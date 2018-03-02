@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(version: 20180216173101) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "cert_profile_constraints", "cert_profiles", column: "profile_id"
+  add_foreign_key "cert_profile_constraints", "cert_profiles", column: "profile_id", on_delete: :cascade
   add_foreign_key "cert_signing_requests", "cert_profiles", column: "profile_id"
   add_foreign_key "cert_signing_requests", "crypto_keys", column: "subject_key_id"
   add_foreign_key "certificates", "authorities", column: "issuer_id"
