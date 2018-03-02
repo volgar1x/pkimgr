@@ -1,44 +1,68 @@
-= form_with(model: user, local: true) do |form|
-  - if user.errors.any?
-    #error_explanation
-      %h2
-        = pluralize(user.errors.count, "error")
-        prohibited this user from being saved:
-      %ul
-        - user.errors.full_messages.each do |message|
-          %li= message
-  .field
-    = form.label :email
-    = form.text_field :email, id: :user_email
-  .field
-    = form.label :password
-    = form.password_field :password, id: :user_password
-  .field
-    = form.label :password_confirmation
-    = form.password_field :password_confirmation, id: :user_password_confirmation
-  .field
-    = form.label :firstname
-    = form.text_field :firstname, id: :user_firstname
-  .field
-    = form.label :lastname
-    = form.text_field :lastname, id: :user_lastname
-  .field
-    = form.label :street
-    = form.text_field :street, id: :user_street
-  .field
-    = form.label :street2
-    = form.text_field :street2, id: :user_street2
-  .field
-    = form.label :city
-    = form.text_field :city, id: :user_city
-  .field
-    = form.label :zip
-    = form.text_field :zip, id: :user_zip
-  .field
-    = form.label :country
-    = form.text_field :country, id: :user_country
-  .field
-    = form.label :phone
-    = form.text_field :phone, id: :user_phone
-  .actions
-    = form.submit
+= form_for [:admin, @user] do |f|
+  .row
+    .col-lg.form-label-group
+      = f.text_field :firstname, class: "form-control", placeholder: "First Name", required: true
+      = f.label :firstname, "First Name"
+
+    .col-lg.form-label-group
+      = f.text_field :lastname, class: "form-control", placeholder: "Last Name", required: true
+      = f.label :lastname, "Last Name"
+
+    .col-lg.form-label-group
+      = f.email_field :email, class: "form-control", placeholder: "E-mail Address", required: true
+      = f.label :email, "E-mail Address"
+
+    .col-lg.form-label-group
+      = f.text_field :phone, class: "form-control", placeholder: "Phone", required: true
+      = f.label :phone, "Phone"
+
+  %fieldset
+    %legend Informations
+    .row
+      .form-label-group.col-md-3
+        = f.text_field :country, class: "form-control", placeholder: "Country"
+        = f.label :country, "Country"
+      .form-label-group.col-md-3
+        = f.text_field :state, class: "form-control", placeholder: "State"
+        = f.label :state, "State"
+      .form-label-group.col-md-4
+        = f.text_field :city, class: "form-control", placeholder: "City"
+        = f.label :city, "City"
+      .form-label-group.col-md-2
+        = f.text_field :zip, class: "form-control", placeholder: "ZIP"
+        = f.label :zip, "ZIP"
+
+  %label
+    = f.check_box :admin
+    Is Admin ?
+
+  .row
+    .form-label-group.col-md
+      = f.password_field :password, class: ["form-control", current_user.errors[:password].any? && "is-invalid"], placeholder: "Password", required: ["new", "create"].include?(params["action"])
+      = f.label :password, "Password"
+      - current_user.errors.messages[:password].each do |error|
+        .invalid-feedback
+          %i.fa.fa-exclamation
+          = error
+    .form-label-group.col-md
+      = f.password_field :password_confirmation, class: ["form-control", current_user.errors[:password_confirmation].any? && "is-invalid"], placeholder: "Password (confirmation)", required: ["new", "create"].include?(params["action"])
+      = f.label :password_confirmation, "Password (confirmation)"
+      - @user.errors.messages[:password_confirmation].each do |error|
+        .invalid-feedback
+          %i.fa.fa-exclamation
+          = error
+
+  .actions.row
+    .col-md
+      %button.btn.btn-primary{:type => "submit"}
+        - if ["new", "create"].include? params["action"]
+          %i.fa.fa-plus
+          Create Account
+        - elsif ["edit", "update"].include? params["action"]
+          %i.fa.fa-edit
+          Edit #{@user.firstname}
+
+    .col-md.text-right-md
+      = link_to request.referer, class: "btn btn-light" do
+        %i.fa.fa-arrow-left
+        Back

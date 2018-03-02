@@ -1,5 +1,10 @@
-%h1 Editing User
-= render 'form', user: @user
-= link_to 'Show', @user
-|
-= link_to 'Back', users_path
+%h1
+  %i.fa.fa-unlock-alt
+  Admin Zone
+  %small
+    %i.fa.fa-angle-double-right.fa-xs
+    Users
+    %i.fa.fa-angle-double-right.fa-xs
+    Edit #{@user.firstname}
+
+= render "form"

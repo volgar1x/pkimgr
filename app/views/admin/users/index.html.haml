@@ -1,32 +1,39 @@
-%p#notice= notice
-%h1 Users
-%table
+.row
+  .col-md
+    %h1
+      %i.fa.fa-unlock-alt
+      Admin Zone
+      %small
+        %i.fa.fa-angle-double-right.fa-xs
+        Users
+  .col-md.text-right-md.align-bottom
+    = link_to new_admin_user_path, class: "btn btn-light" do
+      %i.fa.fa-user-plus
+      Create Account
+
+%table.table.table-hover
   %thead
     %tr
-      %th Email
-      %th Firstname
-      %th Lastname
-      %th Street
-      %th Street2
-      %th City
-      %th Zip
-      %th Country
+      %th Name
+      %th E-mail
       %th Phone
-      %th{:colspan => "3"}
+      %th Has Admin Rights?
+      %th
   %tbody
     - @users.each do |user|
       %tr
-        %td= user.email
-        %td= user.firstname
-        %td= user.lastname
-        %td= user.street
-        %td= user.street2
-        %td= user.city
-        %td= user.zip
-        %td= user.country
-        %td= user.phone
-        %td= link_to 'Show', user
-        %td= link_to 'Edit', edit_user_path(user)
-        %td= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }
-%br/
-= link_to 'New User', new_user_path
+        %td= render user
+        %td= link_to user.email, "mailto:#{user.email}"
+        %td= link_to user.phone, "tel:#{user.phone}"
+        %td
+          - if user.admin?
+            Is Admin
+            %i.fa.fa-check
+        %td
+          = link_to edit_admin_user_path(user), class: "btn" do
+            %i.fa.fa-edit
+            Edit Account
+
+          = link_to admin_user_path(user), class: "btn", data: {method: "delete"} do
+            %i.fa.fa-user-times
+            Destroy Account
