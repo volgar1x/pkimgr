@@ -34,6 +34,24 @@ p3.constraints.create(type: "add_extension", value: {"oid" => "nsCertType", "val
 p3.constraints.create(type: "add_extension", value: {"oid" => "keyUsage", "value" => "digitalSignature, nonRepudiation"})
 p3.constraints.create(type: "add_extension", value: {"oid" => "extendedKeyUsage", "value" => "serverAuth,clientAuth"})
 
+p4 = CertProfile.create name: "OpenVPN Server"
+p4.constraints.create(type: "add_extension", value: {"oid" => "subjectKeyIdentifier", "value" => "hash"})
+p4.constraints.create(type: "add_extension", value: {"oid" => "authorityKeyIdentifier", "value" => "keyid:always,issuer:always"})
+p4.constraints.create(type: "add_extension", value: {"oid" => "basicConstraints", "value" => "CA:FALSE"})
+p4.constraints.create(type: "add_extension", value: {"oid" => "nsCertType", "value" => "server"})
+p4.constraints.create(type: "add_extension", value: {"oid" => "nsComment", "value" => "OpenVPN Server"})
+p4.constraints.create(type: "add_extension", value: {"oid" => "keyUsage", "value" => "digitalSignature, nonRepudiation"})
+p4.constraints.create(type: "add_extension", value: {"oid" => "extendedKeyUsage", "value" => "serverAuth"})
+
+p5 = CertProfile.create name: "OpenVPN Client"
+p5.constraints.create(type: "add_extension", value: {"oid" => "subjectKeyIdentifier", "value" => "hash"})
+p5.constraints.create(type: "add_extension", value: {"oid" => "authorityKeyIdentifier", "value" => "keyid:always,issuer:always"})
+p5.constraints.create(type: "add_extension", value: {"oid" => "basicConstraints", "value" => "CA:FALSE"})
+p5.constraints.create(type: "add_extension", value: {"oid" => "nsCertType", "value" => "client"})
+p5.constraints.create(type: "add_extension", value: {"oid" => "nsComment", "value" => "OpenVPN Client"})
+p5.constraints.create(type: "add_extension", value: {"oid" => "keyUsage", "value" => "digitalSignature, nonRepudiation"})
+p5.constraints.create(type: "add_extension", value: {"oid" => "extendedKeyUsage", "value" => "clientAuth"})
+
 # a = user.authorities.first!
 # a.keys.create! name: "Main",
 #   private_pem: "-----BEGIN RSA PRIVATE KEY-----\nProc-Type: 4,ENCRYPTED\nDEK-Info: AES-256-CTR,1CF3727330C952CC5ED5E8905E13C6BB\n\nnxtuMH2J0j05pYoH10JvC4zdm0TaAsdHwDGWUoqTRG6cJdEFz3ewgdmtaoVD2hG2\nTVxKttG/6KyXvTvvA6OaXmVMGZCM5c86cUPwFf/PX/v5xXIvmd4qEyEgR43MspWf\n4KIav7++0NZ95DnzqscXsE0U2inryK2HPD0sdRuC22CsYAjIz8CkwR2gKAPfXrGm\nAIUqeMdDHIDuvCvDV4QJR/k9sghFYkRvNLzHwXyRaO4s1GmuTemjTLIxehP3504t\nKjrzG5renNjPxapsLPNUHJo9kkjbzKJlwdtiunca1+AHbo41h0z2dceemejV+PXF\ne+TMjOjZCH6SVtTQLeoOA+mE5mRHsEYUSx6wT5Knq3AzHhopVtj/vmYHOiv7LeBq\nr0ireaPj/jWVTCEFBOy8lI3hXhxmeBImeWZ+EnQauQP3OpjblvhOSHQoManu97iw\n/+lLzjJMGUCz95PZwIH8Q2c9FERWrRqwpgbOma28Bv2O5SDeKT86pSFbw/lNIQHU\n3IMXryQOFu8W718RLgsLstKS45JjI9fUnZZUfSmeMYYR6VMRZMFuhrxsBEU2Di3J\nNqT3Wk8M7O7LVs/+UR34GfLGLJ0jjiYuLFjyx+xCiq3bMj5jlrlPImMHy+JUAgqL\nN49sSssx0u/mQ/urTTuSjQoz0fHhdevkU984O45Cx6Et5GIn0E5I4FnzRCNY8Ck7\niz6a37BdfpCMc6gk7ke1BYO/mQ3EuH3iGPrjH+toRkfTRshS5Uv3kD/R2y/wTNfN\nTgUS5VOfR9JiJP5fCnegEl7N+J3CczzH2+Rw5U34/xy5+yZIfQ/wo+EWpPcdwnRT\nhmccrh4A42dn5DuZEYtxBM4eSp0k3ow4Q1k6tjlv5g/oZt2MUv2B2T30gtLJBJhr\nowvfQoZXis6vsyyz42RInbw15wQYpFwmzlJPPF+mfYYjHMu+RgCNYYys+bQ+X3xo\nHZDzviUcd9s9Q74oS6cf2RDHpZZgGFfxNixrzJBhVHJkkDzlap/THSZ53pzD4s4P\nhAoPtxf8MVHnh2WAplKO58p+q1OL/0GgSzSjszqDsQfI0HD64O14s+BDco8IFZu6\nP+WCFyHCrugtKgY1DB87j0yTNlnXvbf4MELvGSxvYaUVOWDCwoT1w/fq0gMa/4sR\nQdxzceXun8YMn8lxZVeLqjgdogwVVByH+C6q+f62Cw3LGI4KU15dlPGt8xJqBJO4\nvVwxdYGHFOu7JZ6rTrXEyafm63iIlxEsRVqQRekJXaAAzEkDKfPOVkMmYzClpxrX\nTdl+0g4+64IWm/gTCNbWAny1wSg11hmggBOTOBSX8raQc54loLhj5fXmtblMNuD9\nY6Jdpqf3fAsYDU1CCcGmMME9WTtfnJyhgUSXdGvdU6st5sAuoWGDXt9BBvUaf/OM\n8WWv+qtOHNiVa65VTk0E0TgDdZ5t2cnY2DuQUI2PIuEzzG4yFv2hjS1gd/V8We7l\nOADAC3Dn/hrlpLEWGV+FDeF7oAvBr2ENpe9/+jiUBeiprMdkvs57hLFqghx0Ano+\n2Bgw25G9DAoMizWn9oYIVYgVSMXsAPQW5/whElu+3IJBkEzn99zZ\n-----END RSA PRIVATE KEY-----\n",
