@@ -74,7 +74,7 @@ class CryptoKeysController < SecureController
         @owner_path = @owner
       when "profile" then
         @owner = current_user
-        @owner_path = [:edit, :profile]
+        @owner_path = :profile
       end
     end
 

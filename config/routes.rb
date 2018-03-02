@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 
   resource :profile, only: [:edit, :update] do
     concerns :has_crypto_keys
+    get "/", to: redirect("/profile/edit")
   end
 
   namespace :admin do
