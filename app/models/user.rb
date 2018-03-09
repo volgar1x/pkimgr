@@ -5,6 +5,8 @@ class User < ApplicationRecord
   has_many :certificates, class_name: "Certificate", as: :subject
   has_many :keys, class_name: "CryptoKey", as: :owner
 
+  attr_accessor :old_password
+
   def name
     "#{self.firstname} #{self.lastname}"
   end

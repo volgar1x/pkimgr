@@ -39,6 +39,9 @@ Rails.application.routes.draw do
   resource :profile, only: [:edit, :update] do
     concerns :has_crypto_keys
     get "/", to: redirect("/profile/edit")
+    get "/password" => :edit_password
+    put "/password" => :update_password
+    patch "/password" => :update_password
   end
 
   namespace :admin do

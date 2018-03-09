@@ -31,4 +31,25 @@ class ProfilesController < SecureController
       render :edit
     end
   end
+
+  def edit_password
+  end
+
+  def update_password
+    unless current_user.authenticate params[:profile][:old_password]
+      current_user.errors.add :old_password, "is invalid"
+      return render :edit_password
+    end
+
+    current_user.assign_attributes params.require(:profile).permit(
+      :password,
+      :password_confirmation,
+    )
+
+    if current_user.save(context: :update_password)
+      redirect_to edit_profile_path, notice: "Your password has been updated."
+    else
+      render :edit_password
+    end
+  end
 end
