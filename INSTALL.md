@@ -15,6 +15,7 @@ Then install these packages :
 
 ```
 sudo apt update
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt install -y git ruby postgresql nodejs nginx build-essential ruby-dev zlib1g-dev dh-autoreconf libpq-dev
 ```
 
