@@ -32,4 +32,8 @@ class Authority < ApplicationRecord
       serial
     end
   end
+
+  def expiring_certificates(now = Time.zone.now)
+    Certificate.select_expired self.certificates
+  end
 end

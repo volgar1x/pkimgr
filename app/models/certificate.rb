@@ -17,4 +17,10 @@ class Certificate < ApplicationRecord
   def expires
     self.x509.not_after
   end
+
+  def self.select_expired(arr, freshness = 1.months, now = Time.zone.now)
+    arr.collect do |cert|
+      (cert.expires - now) < freshness
+    end
+  end
 end

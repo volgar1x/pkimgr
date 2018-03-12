@@ -23,4 +23,9 @@ class User < ApplicationRecord
       *additionals,
     ]
   end
+
+  def expiring_certificates
+    Certificate.select_expired(self.certificates) +
+    authorities.collect{|a| a.expiring_certificates}.flatten
+  end
 end
