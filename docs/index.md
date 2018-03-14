@@ -3,17 +3,17 @@
 ## Table des matières
 
 1. [Se connecter](#se-connecter)
-2. [Création d'une nouvelle autorité](#creation-autorite)
-    1. [Le reste pour une autorité racine](#autorite-racine)
-    2. [Le reste pour un certificat HTTPS](#https)
+2. [Création d'une nouvelle autorité](#création-dune-nouvelle-autorité)
+    1. [Le reste pour une autorité racine](#le-reste-pour-une-autorité-racine)
+    2. [Le reste pour un certificat HTTPS](#le-reste-pour-un-certificat-https)
 
-## Se connecter [se-connecter]
+## Se connecter
 
 Connectez-vous grâce aux logins qu'un administrateur de la plateforme vous aura créé.
 
 ![](img1.png)
 
-## Création d'une nouvelle autorité [creation-autorite]
+## Création d'une nouvelle autorité
 
 Ouvrez les autorités que vous controlez
 
@@ -35,7 +35,7 @@ Importez ou générez une nouvelle clé en appuyant sur le lien "import or gener
 
 ![](img6.png)
 
-#### Le reste pour une autorité racine [autorite-racine]
+#### Le reste pour une autorité racine
 
 Commencez le processus de requête d'un nouveau certificat en appuyant sur "Request Certificate from us"
 
@@ -65,7 +65,7 @@ Le certificat est désormais généré, vous pouvez le télécharger avec le bou
 
 ![](img17.png)
 
-#### Le reste pour un certificat HTTPS [https]
+#### Le reste pour un certificat HTTPS
 
 Commencez par créer une nouvelle clé.
 
