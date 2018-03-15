@@ -1,10 +1,22 @@
-def get_public_key(private_key)
-  if private_key.is_a? OpenSSL::PKey::EC
-    public_key = OpenSSL::PKey::EC.new private_key
+class OpenSSL::PKey::EC
+  def self.generate(curve_name)
+    key = OpenSSL::PKey::EC.new curve_name
+    key.generate_key
+    key
+  end
+
+  def private?
+    self.private_key?
+  end
+
+  def public?
+    self.public_key?
+  end
+
+  def public_key
+    public_key = OpenSSL::PKey::EC.new self
     public_key.private_key = nil
     public_key
-  else
-    private_key.public_key
   end
 end
 
@@ -35,7 +47,7 @@ class CryptoKey < ApplicationRecord
   def set_private_key(private_key, password)
     raise "expected a private key" unless private_key.private?
 
-    self.public_key = get_public_key(private_key)
+    self.public_key = private_key.public_key
 
     @_private_key = private_key
     self.private_pem = private_key.to_pem(Rails.application.config.cipher, password)
@@ -61,10 +73,7 @@ class CryptoKey < ApplicationRecord
     private_key = case self.algorithm
     when "RSA" then OpenSSL::PKey::RSA.generate self.key_size.to_i
     when "DSA" then OpenSSL::PKey::DSA.generate self.key_size.to_i
-    when "ECDSA" then
-      key = OpenSSL::PKey::EC.new self.curve_name
-      key.generate_key
-      key
+    when "ECDSA" then OpenSSL::PKey::EC.generate self.curve_name
     end
 
     self.set_private_key private_key, self.owner_password
